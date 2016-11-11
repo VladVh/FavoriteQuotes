@@ -11,7 +11,7 @@ import com.development.vvoitsekh.favoritequotes.model.content.Quote;
 public interface QuoteContract {
     interface View extends BaseView<Presenter> {
 
-        void showQuote();
+        void showQuote(Quote quote);
 
         void showMarkedFavorite();
 
@@ -25,5 +25,7 @@ public interface QuoteContract {
         void addToFavorites(Quote quote);
 
         void loadQuote();
+
+        void openFavoriteQuotes();
     }
 }

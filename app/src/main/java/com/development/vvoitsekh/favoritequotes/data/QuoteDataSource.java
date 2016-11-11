@@ -49,8 +49,8 @@ public class QuoteDataSource implements DataSource {
                 int itemId = cursor.getInt(cursor.getColumnIndex(QuotePersistentContract.QuoteEntry.COLUMN_ENTRY_ID));
                 String text = cursor.getString(cursor.getColumnIndex(QuotePersistentContract.QuoteEntry.COLUMN_QUOTE_TEXT));
                 String author = cursor.getString(cursor.getColumnIndex(QuotePersistentContract.QuoteEntry.COLUMN_QUOTE_AUTHOR));
-                Quote quote = new Quote(itemId, text, author);
-                quotes.add(quote);
+                //Quote quote = new Quote(itemId, text, author);
+                //quotes.add(quote);
             }
         }
 
@@ -69,6 +69,11 @@ public class QuoteDataSource implements DataSource {
 
     @Override
     public void getQuote(GetQuoteCallback callback) {
+
+    }
+
+    @Override
+    public void insertQuote(Quote quote) {
 
     }
 

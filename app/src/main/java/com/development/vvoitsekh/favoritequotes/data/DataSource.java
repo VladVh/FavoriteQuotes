@@ -27,6 +27,8 @@ public interface DataSource {
 
     void getQuote(GetQuoteCallback callback);
 
+    void insertQuote(Quote quote);
+
     void markAsFavorite(int quoteId);
 
     void removeQuote(int quoteId);

@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.development.vvoitsekh.favoritequotes.R;
+import com.development.vvoitsekh.favoritequotes.data.QuoteDataSource;
 import com.development.vvoitsekh.favoritequotes.model.content.Quote;
 
 public class QuoteActivity extends AppCompatActivity {
@@ -48,7 +49,7 @@ public class QuoteActivity extends AppCompatActivity {
             transaction.commit();
         }
 
-
+        mQuotePresenter = new QuotePresenter(QuoteDataSource.getInstance(this), fragment);
     }
 
 

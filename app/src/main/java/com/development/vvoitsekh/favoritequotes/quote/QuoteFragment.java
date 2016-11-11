@@ -8,11 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.development.vvoitsekh.favoritequotes.R;
+import com.development.vvoitsekh.favoritequotes.model.content.Quote;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class QuoteFragment extends Fragment {
+public class QuoteFragment extends Fragment implements QuoteContract.View {
 
 
     public QuoteFragment() {
@@ -29,5 +30,30 @@ public class QuoteFragment extends Fragment {
 
     public static QuoteFragment newInstance() {
         return null;
+    }
+
+    @Override
+    public void showQuote(Quote quote) {
+
+    }
+
+    @Override
+    public void showMarkedFavorite() {
+
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean active) {
+
+    }
+
+    @Override
+    public boolean isActive() {
+        return false;
+    }
+
+    @Override
+    public void setPresenter(QuoteContract.Presenter presenter) {
+
     }
 }

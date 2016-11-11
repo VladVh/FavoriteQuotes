@@ -19,7 +19,7 @@ public final class ApiFactory {
 
     private static QuoteService sService;
 
-    public static QuoteService getMoviesService() {
+    public static QuoteService getQuotesService() {
         //I know that double checked locking is not a good pattern, but it's enough here
         QuoteService service = sService;
         if (service == null) {

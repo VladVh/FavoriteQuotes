@@ -12,5 +12,5 @@ import rx.Observable;
 public interface QuoteService {
 
     @GET("?method=getQuote&lang=en&format=json&json=?")
-    Observable<Quote> popularMovies();
+    Observable<Quote> randomQuote();
 }

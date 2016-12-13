@@ -1,4 +1,4 @@
-package com.development.vvoitsekh.favoritequotes.model.content;
+package com.development.vvoitsekh.favoritequotes.data.model;
 
 /**
  * Created by v.voitsekh on 10.11.2016.
@@ -46,6 +46,11 @@ public class Quote {
         this.senderName = senderName;
         this.senderLink = senderLink;
         this.quoteLink = quoteLink;
+    }
+
+    public Quote(String quoteText, String quoteAuthor) {
+        this.quoteText = quoteText;
+        this.quoteAuthor = quoteAuthor;
     }
 
     /**

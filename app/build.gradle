@@ -41,6 +41,11 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
 
+    compile 'com.google.dagger:dagger:2.8'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.8'
+
+    compile 'com.squareup.sqlbrite:sqlbrite:1.0.0'
+
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
 
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'

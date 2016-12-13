@@ -2,7 +2,7 @@ package com.development.vvoitsekh.favoritequotes.quote;
 
 import com.development.vvoitsekh.favoritequotes.BasePresenter;
 import com.development.vvoitsekh.favoritequotes.BaseView;
-import com.development.vvoitsekh.favoritequotes.model.content.Quote;
+import com.development.vvoitsekh.favoritequotes.data.model.Quote;
 
 /**
  * Created by v.voitsekh on 10.11.2016.

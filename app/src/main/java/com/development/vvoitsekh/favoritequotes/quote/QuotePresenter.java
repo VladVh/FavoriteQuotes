@@ -1,7 +1,7 @@
 package com.development.vvoitsekh.favoritequotes.quote;
 
-import com.development.vvoitsekh.favoritequotes.data.QuoteDataSource;
-import com.development.vvoitsekh.favoritequotes.model.content.Quote;
+import com.development.vvoitsekh.favoritequotes.data.local.QuoteDataSource;
+import com.development.vvoitsekh.favoritequotes.data.model.Quote;
 import com.development.vvoitsekh.favoritequotes.network.ApiFactory;
 
 import rx.Observable;

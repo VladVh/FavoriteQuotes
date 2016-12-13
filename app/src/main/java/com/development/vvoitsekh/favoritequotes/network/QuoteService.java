@@ -1,6 +1,6 @@
 package com.development.vvoitsekh.favoritequotes.network;
 
-import com.development.vvoitsekh.favoritequotes.model.content.Quote;
+import com.development.vvoitsekh.favoritequotes.data.model.Quote;
 
 import retrofit2.http.GET;
 import rx.Observable;

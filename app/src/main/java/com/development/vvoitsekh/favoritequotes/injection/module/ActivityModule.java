@@ -5,13 +5,14 @@ import android.content.Context;
 
 import com.development.vvoitsekh.favoritequotes.injection.ActivityContext;
 
+import dagger.Module;
 import dagger.Provides;
 
 /**
  * Created by v.voitsekh on 13.12.2016.
  */
 
-
+@Module
 public class ActivityModule {
 
     private Activity mActivity;

@@ -1,5 +1,6 @@
 package com.development.vvoitsekh.favoritequotes.ui.main;
 
+import com.development.vvoitsekh.favoritequotes.data.model.Quote;
 import com.development.vvoitsekh.favoritequotes.ui.base.BaseActivity;
 
 /**
@@ -7,4 +8,13 @@ import com.development.vvoitsekh.favoritequotes.ui.base.BaseActivity;
  */
 
 public class MainActivity extends BaseActivity implements MainMvpView {
+    @Override
+    public void showQuote(Quote quote) {
+        
+    }
+
+    @Override
+    public void showError() {
+
+    }
 }

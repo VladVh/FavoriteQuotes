@@ -1,6 +1,6 @@
 package com.development.vvoitsekh.favoritequotes.network;
 
-import com.development.vvoitsekh.favoritequotes.data.model.Quote;
+import org.json.JSONObject;
 
 import retrofit2.http.GET;
 import rx.Observable;
@@ -12,5 +12,5 @@ import rx.Observable;
 public interface QuoteService {
 
     @GET("?method=getQuote&lang=en&format=json&json=?")
-    Observable<Quote> randomQuote();
+    Observable<JSONObject> randomQuote();
 }

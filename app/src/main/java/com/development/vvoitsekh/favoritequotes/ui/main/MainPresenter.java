@@ -5,6 +5,7 @@ import com.development.vvoitsekh.favoritequotes.data.model.Quote;
 import com.development.vvoitsekh.favoritequotes.network.ApiFactory;
 import com.development.vvoitsekh.favoritequotes.ui.base.BasePresenter;
 import com.development.vvoitsekh.favoritequotes.utils.JsonUtils;
+import com.development.vvoitsekh.favoritequotes.utils.RxUtil;
 
 import org.json.JSONObject;
 
@@ -47,7 +48,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
     public void loadQuote() {
         checkViewAttached();
-
+        RxUtil.unsubscribe(mSubscription);
         mSubscription = ApiFactory.getQuotesService()
                 .randomQuote()
                 .timeout(2, TimeUnit.SECONDS)

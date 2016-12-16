@@ -3,8 +3,6 @@ package com.development.vvoitsekh.favoritequotes.injection.module;
 import android.app.Application;
 import android.content.Context;
 
-import com.development.vvoitsekh.favoritequotes.injection.ApplicationContext;
-
 import dagger.Module;
 import dagger.Provides;
 
@@ -26,7 +24,6 @@ public class ApplicationModule {
     }
 
     @Provides
-    @ApplicationContext
     Context provideContext() {
         return mApplication;
     }

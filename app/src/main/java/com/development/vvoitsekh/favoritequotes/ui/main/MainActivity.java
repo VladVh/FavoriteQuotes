@@ -18,8 +18,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements MainMvpView {
 
-    @Inject
-    private MainPresenter mMainPresenter;
+    @Inject MainPresenter mMainPresenter;
 
     @BindView(R.id.quote_textview) TextView mQuoteTextView;
     @BindView(R.id.author_textview) TextView mAuthorTextView;

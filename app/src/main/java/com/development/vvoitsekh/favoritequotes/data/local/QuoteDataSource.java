@@ -9,6 +9,8 @@ import com.squareup.sqlbrite.SqlBrite;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
@@ -19,21 +21,14 @@ import rx.schedulers.Schedulers;
  */
 
 public class QuoteDataSource {
-    private static QuoteDataSource INSTANCE;
 
     private final BriteDatabase mDb;
 
-    private QuoteDataSource(Context context) {
+    @Inject
+    public QuoteDataSource(Context context) {
         QuoteDBHelper mDbHelper = new QuoteDBHelper(context);
         SqlBrite.Builder builder = new SqlBrite.Builder();
         mDb = builder.build().wrapDatabaseHelper(mDbHelper, Schedulers.immediate());
-    }
-
-    public static QuoteDataSource getInstance(Context context) {
-        if (INSTANCE == null) {
-            INSTANCE = new QuoteDataSource(context);
-        }
-        return INSTANCE;
     }
 
     public Observable<List<Quote>> getQuotes() {
@@ -47,7 +42,7 @@ public class QuoteDataSource {
                 });
     }
 
-    public Observable<Quote> addQuote(Quote quote) {
+    public Observable<Quote> addQuote(final Quote quote) {
         return Observable.create(new Observable.OnSubscribe<Quote>() {
             @Override
             public void call(Subscriber<? super Quote> subscriber) {

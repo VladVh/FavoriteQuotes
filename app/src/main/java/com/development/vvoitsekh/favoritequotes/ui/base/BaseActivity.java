@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.development.vvoitsekh.favoritequotes.MainApplication;
 import com.development.vvoitsekh.favoritequotes.injection.component.ActivityComponent;
 import com.development.vvoitsekh.favoritequotes.injection.component.ConfigPersistentComponent;
+import com.development.vvoitsekh.favoritequotes.injection.component.DaggerConfigPersistentComponent;
 import com.development.vvoitsekh.favoritequotes.injection.module.ActivityModule;
 
 import java.util.HashMap;

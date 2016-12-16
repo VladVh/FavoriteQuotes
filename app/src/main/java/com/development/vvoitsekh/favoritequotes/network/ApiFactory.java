@@ -1,10 +1,15 @@
 package com.development.vvoitsekh.favoritequotes.network;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.development.vvoitsekh.favoritequotes.BuildConfig;
 
+import java.io.IOException;
+
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -59,6 +64,14 @@ public final class ApiFactory {
     @NonNull
     private static OkHttpClient buildClient() {
         return new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Response response = chain.proceed(chain.request());
+                        Log.e("Retrofit@Response", response.body().string());
+                        return response;
+                    }
+                })
                 .build();
     }
 }

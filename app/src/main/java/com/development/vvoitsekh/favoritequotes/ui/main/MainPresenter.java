@@ -1,5 +1,7 @@
 package com.development.vvoitsekh.favoritequotes.ui.main;
 
+import android.util.Log;
+
 import com.development.vvoitsekh.favoritequotes.data.DataManager;
 import com.development.vvoitsekh.favoritequotes.data.model.Quote;
 import com.development.vvoitsekh.favoritequotes.network.ApiFactory;
@@ -8,8 +10,6 @@ import com.development.vvoitsekh.favoritequotes.utils.JsonUtils;
 import com.development.vvoitsekh.favoritequotes.utils.RxUtil;
 
 import org.json.JSONObject;
-
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -51,8 +51,6 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         RxUtil.unsubscribe(mSubscription);
         mSubscription = ApiFactory.getQuotesService()
                 .randomQuote()
-                .timeout(2, TimeUnit.SECONDS)
-                .retry(3)
                 .subscribeOn(Schedulers.io()) // do the network call on another thread
                 .observeOn(AndroidSchedulers.mainThread()) // return the result in mainThread
                 .map(new Func1<JSONObject, Quote>() {
@@ -69,6 +67,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.e("INTERNET ERROR", e.getMessage());
                         getMvpView().showError();
                     }
 

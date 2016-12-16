@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.development.vvoitsekh.favoritequotes.data.DataManager;
 import com.development.vvoitsekh.favoritequotes.data.local.QuoteDataSource;
-import com.development.vvoitsekh.favoritequotes.injection.ApplicationContext;
 import com.development.vvoitsekh.favoritequotes.injection.module.ApplicationModule;
 
 import javax.inject.Singleton;
@@ -20,7 +19,6 @@ import dagger.Component;
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
 
-    @ApplicationContext
     Context context();
 
     Application application();

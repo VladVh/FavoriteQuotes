@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.development.vvoitsekh.favoritequotes.injection.component.ApplicationComponent;
+import com.development.vvoitsekh.favoritequotes.injection.component.DaggerApplicationComponent;
 import com.development.vvoitsekh.favoritequotes.injection.module.ApplicationModule;
 
 /**

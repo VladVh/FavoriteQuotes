@@ -4,10 +4,16 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.development.vvoitsekh.favoritequotes.injection.ApplicationContext;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 /**
  * Created by v.voitsekh on 10.11.2016.
  */
 
+@Singleton
 public class QuoteDBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
@@ -27,7 +33,8 @@ public class QuoteDBHelper extends SQLiteOpenHelper {
                     PersistentContract.QuoteEntry.COLUMN_FAVORITES + INT_TYPE +
                     " )";
 
-    public QuoteDBHelper(Context context) {
+    @Inject
+    public QuoteDBHelper(@ApplicationContext Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

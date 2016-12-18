@@ -64,14 +64,14 @@ public final class ApiFactory {
     @NonNull
     private static OkHttpClient buildClient() {
         return new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Response response = chain.proceed(chain.request());
-                        Log.e("Retrofit@Response", response.body().string());
-                        return response;
-                    }
-                })
+//                .addInterceptor(new Interceptor() {
+//                    @Override
+//                    public Response intercept(Chain chain) throws IOException {
+//                        Response response = chain.proceed(chain.request());
+//                        Log.e("Retrofit@Response", response.body().string());
+//                        return response;
+//                    }
+//                })
                 .build();
     }
 }

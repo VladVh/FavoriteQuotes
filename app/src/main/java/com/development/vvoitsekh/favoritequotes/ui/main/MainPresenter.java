@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import javax.inject.Inject;
 
+import okhttp3.ResponseBody;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -53,16 +54,16 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                 .randomQuote()
                 .subscribeOn(Schedulers.io()) // do the network call on another thread
                 .observeOn(AndroidSchedulers.mainThread()) // return the result in mainThread
-                .map(new Func1<JSONObject, Quote>() {
+                .map(new Func1<ResponseBody, Quote>() {
                     @Override
-                    public Quote call(JSONObject jsonObject) {
-                        return JsonUtils.parse(jsonObject);
+                    public Quote call(ResponseBody response) {
+                        return JsonUtils.parse(response);
                     }
                 })
                 .subscribe(new Subscriber<Quote>() {
                     @Override
                     public void onCompleted() {
-
+                        Log.e("Completed", "completed");
                     }
 
                     @Override

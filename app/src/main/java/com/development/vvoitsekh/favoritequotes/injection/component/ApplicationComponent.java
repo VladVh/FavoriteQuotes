@@ -1,7 +1,6 @@
 package com.development.vvoitsekh.favoritequotes.injection.component;
 
 import android.app.Application;
-import android.content.Context;
 
 import com.development.vvoitsekh.favoritequotes.data.DataManager;
 import com.development.vvoitsekh.favoritequotes.data.local.QuoteDataSource;
@@ -19,7 +18,7 @@ import dagger.Component;
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
 
-    Context context();
+    //Context context();
 
     Application application();
     QuoteDataSource databaseHelper();

@@ -1,6 +1,5 @@
 package com.development.vvoitsekh.favoritequotes.data.local;
 
-import android.content.Context;
 import android.database.Cursor;
 
 import com.development.vvoitsekh.favoritequotes.data.model.Quote;
@@ -25,10 +24,10 @@ public class QuoteDataSource {
     private final BriteDatabase mDb;
 
     @Inject
-    public QuoteDataSource(Context context) {
-        QuoteDBHelper mDbHelper = new QuoteDBHelper(context);
+    public QuoteDataSource(QuoteDBHelper quoteDBHelper) {
+        //QuoteDBHelper mDbHelper = new QuoteDBHelper(context);
         SqlBrite.Builder builder = new SqlBrite.Builder();
-        mDb = builder.build().wrapDatabaseHelper(mDbHelper, Schedulers.immediate());
+        mDb = builder.build().wrapDatabaseHelper(quoteDBHelper, Schedulers.immediate());
     }
 
     public Observable<List<Quote>> getQuotes() {

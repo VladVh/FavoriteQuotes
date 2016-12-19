@@ -1,9 +1,13 @@
 package com.development.vvoitsekh.favoritequotes.ui.main;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.TextView;
 
 import com.development.vvoitsekh.favoritequotes.R;
+import com.development.vvoitsekh.favoritequotes.data.local.PersistentContract;
 import com.development.vvoitsekh.favoritequotes.data.model.Quote;
 import com.development.vvoitsekh.favoritequotes.ui.base.BaseActivity;
 
@@ -27,11 +31,35 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
+
         setContentView(R.layout.activity_quote);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(myToolbar);
+
         ButterKnife.bind(this);
 
         mMainPresenter.attachView(this);
-        mMainPresenter.loadQuote();
+
+        if (savedInstanceState != null) {
+            mQuoteTextView.setText(savedInstanceState.getString(PersistentContract.QuoteEntry.COLUMN_QUOTE_TEXT));
+            mAuthorTextView.setText(savedInstanceState.getString(PersistentContract.QuoteEntry.COLUMN_QUOTE_AUTHOR));
+        } else {
+            mMainPresenter.loadQuote();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(PersistentContract.QuoteEntry.COLUMN_QUOTE_TEXT, mQuoteTextView.getText().toString());
+        outState.putString(PersistentContract.QuoteEntry.COLUMN_QUOTE_AUTHOR, mAuthorTextView.getText().toString());
     }
 
     @Override

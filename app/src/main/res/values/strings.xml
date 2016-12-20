@@ -2,10 +2,6 @@
     <string name="app_name">FavoriteQuotes</string>
 
     <string name="error_loading_quote">Error loading a quote. Please, check Internet connection.</string>
-
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="list_title">item1</string>
-    <string name="statistics_title">item2</string>
+    <string name="menu_favorites">Favorites</string>
+    <string name="menu_refresh">Refresh</string>
 </resources>

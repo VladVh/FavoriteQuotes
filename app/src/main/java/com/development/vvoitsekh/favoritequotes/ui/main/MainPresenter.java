@@ -50,6 +50,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     public void loadQuote() {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
+        Log.e("loadQuote", "loadQuote");
         mSubscription = ApiFactory.getQuotesService()
                 .randomQuote()
                 .subscribeOn(Schedulers.io()) // do the network call on another thread
@@ -74,9 +75,14 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
                     @Override
                     public void onNext(Quote quote) {
+                        Log.e("added", "quote set");
                         getMvpView().showQuote(quote);
                     }
                 });
+
+    }
+
+    public void addToFavorites(String quoteText, String authorText) {
 
     }
 }

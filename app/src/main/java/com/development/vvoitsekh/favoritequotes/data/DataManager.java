@@ -27,4 +27,8 @@ public class DataManager {
     public Observable<List<Quote>> getQuotes() {
         return mDatabaseHelper.getQuotes().distinct();
     }
+
+    public Observable<Quote> addQuote(Quote quote) {
+        return mDatabaseHelper.addQuote(quote);
+    }
 }

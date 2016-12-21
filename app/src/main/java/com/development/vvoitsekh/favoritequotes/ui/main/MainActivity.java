@@ -5,14 +5,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.development.vvoitsekh.favoritequotes.R;
 import com.development.vvoitsekh.favoritequotes.data.local.PersistentContract;
 import com.development.vvoitsekh.favoritequotes.data.model.Quote;
 import com.development.vvoitsekh.favoritequotes.ui.base.BaseActivity;
+import com.development.vvoitsekh.favoritequotes.ui.favorites.FavoritesActivity;
 
 import javax.inject.Inject;
 
@@ -68,7 +67,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
             item.setEnabled(false);
             item.setVisible(false);
         } else if(item.getItemId() == R.id.action_favorites) {
-            //
+            startActivity(FavoritesActivity.getStartIntent(getApplicationContext()));
         } else if(item.getItemId() == R.id.favorites_imageButton) {
             mMainPresenter.addToFavorites(mQuoteTextView.getText().toString(), mAuthorTextView.getText().toString());
         }

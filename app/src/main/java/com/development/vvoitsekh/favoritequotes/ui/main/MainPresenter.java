@@ -9,7 +9,7 @@ import com.development.vvoitsekh.favoritequotes.ui.base.BasePresenter;
 import com.development.vvoitsekh.favoritequotes.utils.JsonUtils;
 import com.development.vvoitsekh.favoritequotes.utils.RxUtil;
 
-import org.json.JSONObject;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -53,6 +53,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         Log.e("loadQuote", "loadQuote");
         mSubscription = ApiFactory.getQuotesService()
                 .randomQuote()
+                .delay(1900, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io()) // do the network call on another thread
                 .observeOn(AndroidSchedulers.mainThread()) // return the result in mainThread
                 .map(new Func1<ResponseBody, Quote>() {
@@ -82,7 +83,8 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
     }
 
-    public void addToFavorites(String quoteText, String authorText) {
-
+    public void addToFavorites(String quoteText, String quoteAuthor) {
+        Quote quote = new Quote(quoteText, quoteAuthor);
+        mDataManager.addQuote(quote);
     }
 }

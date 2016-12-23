@@ -14,7 +14,6 @@ import javax.inject.Inject;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by v.voitsekh on 21.12.2016.
@@ -42,7 +41,7 @@ public class FavoritesPresenter extends BasePresenter<FavoritesMvpView> {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
         mSubscription = mDataManager.getQuotes()
-                .subscribeOn(Schedulers.io())
+                //.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Quote>>() {
                     @Override

@@ -17,7 +17,7 @@ public class PersistentContract {
     }
 
     public static abstract class QuoteEntry implements BaseColumns {
-        public static final String TABLE_NAME = "table";
+        public static final String TABLE_NAME = "quotes";
 
         public static final String COLUMN_ENTRY_ID = "entryid";
         public static final String COLUMN_QUOTE_TEXT = "text";

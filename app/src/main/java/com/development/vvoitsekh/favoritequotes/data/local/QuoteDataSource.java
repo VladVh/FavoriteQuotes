@@ -11,7 +11,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Observable;
-import rx.Subscriber;
+import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -41,26 +41,32 @@ public class QuoteDataSource {
                 });
     }
 
-    public Observable<Quote> addQuote(final Quote quote) {
-        return Observable.create(new Observable.OnSubscribe<Quote>() {
+    public Observable<Long> addQuote(final Quote quote) {
+        return Observable.defer(new Func0<Observable<Long>>() {
             @Override
-            public void call(Subscriber<? super Quote> subscriber) {
-                if (subscriber.isUnsubscribed()) {
-                    return;
-                }
-                BriteDatabase.Transaction transaction = mDb.newTransaction();
-                try {
-                    long result = mDb.insert(PersistentContract.QuoteEntry.TABLE_NAME,
-                            PersistentContract.toContentValues(quote));
-                    if (result >= 0) {
-                        subscriber.onNext(quote);
-                    }
-                    transaction.markSuccessful();
-                    subscriber.onCompleted();
-                } finally {
-                    transaction.end();
-                }
+            public Observable<Long> call() {
+                return Observable.just(mDb.insert(PersistentContract.QuoteEntry.TABLE_NAME, PersistentContract.toContentValues(quote)));
             }
         });
+//        return Observable.create(new Observable.OnSubscribe<Quote>() {
+//            @Override
+//            public void call(Subscriber<? super Quote> subscriber) {
+//                if (subscriber.isUnsubscribed()) {
+//                    return;
+//                }
+//                BriteDatabase.Transaction transaction = mDb.newTransaction();
+//                try {
+//                    long result = mDb.insert(PersistentContract.QuoteEntry.TABLE_NAME,
+//                            PersistentContract.toContentValues(quote));
+//                    if (result >= 0) {
+//                        subscriber.onNext(quote);
+//                    }
+//                    transaction.markSuccessful();
+//                    subscriber.onCompleted();
+//                } finally {
+//                    transaction.end();
+//                }
+//            }
+//        });
     }
 }

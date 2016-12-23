@@ -34,6 +34,8 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView 
 
         mRecyclerView.setAdapter(mQuotesAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), R.drawable.divider));
+
         mFavoritesPresenter.attachView(this);
         mFavoritesPresenter.getQuotes();
     }

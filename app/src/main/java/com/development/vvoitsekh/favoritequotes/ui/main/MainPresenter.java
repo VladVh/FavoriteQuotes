@@ -85,6 +85,6 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
     public void addToFavorites(String quoteText, String quoteAuthor) {
         Quote quote = new Quote(quoteText, quoteAuthor);
-        mDataManager.addQuote(quote);
+        mDataManager.addQuote(quote).subscribe();
     }
 }

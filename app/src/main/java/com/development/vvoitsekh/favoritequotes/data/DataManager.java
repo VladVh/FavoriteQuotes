@@ -17,18 +17,24 @@ import rx.Observable;
 @Singleton
 public class DataManager {
 
-    private final QuoteDataSource mDatabaseHelper;
+    private final QuoteDataSource mDataSource;
+    //private final DataSource mDataSource;
 
     @Inject
     public DataManager(QuoteDataSource mDatabaseHelper) {
-        this.mDatabaseHelper = mDatabaseHelper;
+        this.mDataSource = mDatabaseHelper;
     }
+
+//    @Inject
+//    public DataManager(DataSource dataSource) {
+//        this.mDataSource = dataSource;
+//    }
 
     public Observable<List<Quote>> getQuotes() {
-        return mDatabaseHelper.getQuotes().distinct();
+        return mDataSource.getQuotes();
     }
 
-    public Observable<Quote> addQuote(Quote quote) {
-        return mDatabaseHelper.addQuote(quote);
+    public Observable<Long> addQuote(Quote quote) {
+        return mDataSource.addQuote(quote);
     }
 }

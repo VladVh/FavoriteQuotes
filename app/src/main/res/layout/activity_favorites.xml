@@ -5,7 +5,7 @@
     android:id="@+id/activity_favorites"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorGray"
+    android:background="@color/colorGreen"
     tools:context="com.development.vvoitsekh.favoritequotes.ui.favorites.FavoritesActivity">
 
     <android.support.v7.widget.RecyclerView

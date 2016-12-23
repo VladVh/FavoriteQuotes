@@ -5,6 +5,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.development.vvoitsekh.favoritequotes.R;
@@ -86,6 +87,10 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         super.onDestroy();
 
         mMainPresenter.detachView();
+    }
+
+    public void addToFavorites(View view) {
+        mMainPresenter.addToFavorites(mQuoteTextView.getText().toString(), mAuthorTextView.getText().toString());
     }
 
     @Override

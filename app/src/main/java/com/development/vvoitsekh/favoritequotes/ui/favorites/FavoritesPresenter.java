@@ -65,4 +65,8 @@ public class FavoritesPresenter extends BasePresenter<FavoritesMvpView> {
                     }
                 });
     }
+
+    public void deleteQuoteFromFavorites(Quote quote) {
+        mDataManager.deleteQuote(quote).subscribe();
+    }
 }

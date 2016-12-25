@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewParent;
+import android.widget.TextView;
 
 import com.development.vvoitsekh.favoritequotes.R;
 import com.development.vvoitsekh.favoritequotes.data.model.Quote;
@@ -24,6 +27,7 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView 
     @Inject QuotesAdapter mQuotesAdapter;
 
     @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
+    @BindView(R.id.favorites_empty_textView) TextView mEmptyTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +49,30 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView 
         return intent;
     }
 
+    public void deleteFromFavorites(View view) {
+        ViewParent parent = view.getParent().getParent();
+        RecyclerView recyclerView = (RecyclerView) parent.getParent();
+        long id = recyclerView.getChildAdapterPosition((View) parent);
+
+        Quote quote = mQuotesAdapter.getItem((int) id);
+
+        mQuotesAdapter.delete(quote);
+        mQuotesAdapter.notifyDataSetChanged();
+
+        mFavoritesPresenter.deleteQuoteFromFavorites(quote);
+    }
+
     @Override
     public void showFavorites(List<Quote> quotes) {
+        mEmptyTextView.setVisibility(View.INVISIBLE);
+
         mQuotesAdapter.setQuotes(quotes);
         mQuotesAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showFavoritesEmpty() {
+        mEmptyTextView.setVisibility(View.VISIBLE);
         Log.e("Empty DB", "No quotes in the database");
     }
 

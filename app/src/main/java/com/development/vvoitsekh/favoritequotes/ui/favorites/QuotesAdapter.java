@@ -51,6 +51,14 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.QuotesView
         return mQuotes.size();
     }
 
+    public Quote getItem(int id) {
+        return mQuotes.get(id);
+    }
+
+    public void delete(Quote quote) {
+        mQuotes.remove(quote);
+    }
+
     class QuotesViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.quote_item_textview) TextView quoteTextView;

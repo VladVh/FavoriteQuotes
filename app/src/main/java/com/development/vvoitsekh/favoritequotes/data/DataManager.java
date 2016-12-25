@@ -37,4 +37,8 @@ public class DataManager {
     public Observable<Long> addQuote(Quote quote) {
         return mDataSource.addQuote(quote);
     }
+
+    public Observable<Integer> deleteQuote(Quote quote) {
+        return mDataSource.removeQuote(quote);
+    }
 }

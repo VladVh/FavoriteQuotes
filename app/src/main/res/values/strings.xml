@@ -4,4 +4,7 @@
     <string name="error_loading_quote">Error loading a quote. Please, check Internet connection.</string>
     <string name="menu_favorites">Favorites</string>
     <string name="menu_refresh">Refresh</string>
+
+    <!--favorites !-->
+    <string name="favorites_empty_textview">There aren\'t any quotes yet. Please, add some quotes to your favorites</string>
 </resources>

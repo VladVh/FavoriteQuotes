@@ -69,4 +69,16 @@ public class QuoteDataSource {
 //            }
 //        });
     }
+
+    public Observable<Integer> removeQuote(final Quote quote) {
+        return Observable.defer(new Func0<Observable<Integer>>() {
+            @Override
+            public Observable<Integer> call() {
+                return Observable.just(mDb.delete(
+                        PersistentContract.QuoteEntry.TABLE_NAME,
+                        PersistentContract.QuoteEntry.COLUMN_QUOTE_TEXT + "=?",
+                        quote.getQuoteText()));
+            }
+        });
+    }
 }

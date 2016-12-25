@@ -53,7 +53,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         Log.e("loadQuote", "loadQuote");
         mSubscription = ApiFactory.getQuotesService()
                 .randomQuote()
-                .delay(1900, TimeUnit.MILLISECONDS)
+                //.delay(1900, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io()) // do the network call on another thread
                 .observeOn(AndroidSchedulers.mainThread()) // return the result in mainThread
                 .map(new Func1<ResponseBody, Quote>() {

@@ -1,6 +1,7 @@
 package com.development.vvoitsekh.favoritequotes.ui.main;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -69,10 +70,13 @@ public class MainActivity extends BaseActivity implements MainMvpView {
             item.setVisible(false);
         } else if(item.getItemId() == R.id.action_favorites) {
             startActivity(FavoritesActivity.getStartIntent(getApplicationContext()));
-        } else if(item.getItemId() == R.id.favorites_imageButton) {
-            mMainPresenter.addToFavorites(mQuoteTextView.getText().toString(), mAuthorTextView.getText().toString());
         }
         return true;
+    }
+
+
+    public void addToFavorites(View view) {
+        mMainPresenter.addToFavorites(mQuoteTextView.getText().toString(), mAuthorTextView.getText().toString());
     }
 
     @Override
@@ -89,16 +93,19 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         mMainPresenter.detachView();
     }
 
-    public void addToFavorites(View view) {
-        mMainPresenter.addToFavorites(mQuoteTextView.getText().toString(), mAuthorTextView.getText().toString());
-    }
-
     @Override
     public void showQuote(Quote quote) {
         mQuoteTextView.setText(quote.getQuoteText());
         mAuthorTextView.setText(quote.getQuoteAuthor());
-        mMenu.findItem(R.id.action_refresh).setEnabled(true);
-        mMenu.findItem(R.id.action_refresh).setVisible(true);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mMenu.findItem(R.id.action_refresh).setEnabled(true);
+                mMenu.findItem(R.id.action_refresh).setVisible(true);
+            }
+        }, 2000);
+
     }
 
     @Override

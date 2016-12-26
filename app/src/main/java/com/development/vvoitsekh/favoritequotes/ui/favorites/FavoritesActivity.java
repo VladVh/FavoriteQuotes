@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewParent;
@@ -28,6 +29,7 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView 
 
     @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
     @BindView(R.id.favorites_empty_textView) TextView mEmptyTextView;
+    @BindView(R.id.main_toolbar) Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,9 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView 
         activityComponent().inject(this);
         setContentView(R.layout.activity_favorites);
         ButterKnife.bind(this);
+
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRecyclerView.setAdapter(mQuotesAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

@@ -9,8 +9,6 @@ import com.development.vvoitsekh.favoritequotes.ui.base.BasePresenter;
 import com.development.vvoitsekh.favoritequotes.utils.JsonUtils;
 import com.development.vvoitsekh.favoritequotes.utils.RxUtil;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.inject.Inject;
 
 import okhttp3.ResponseBody;
@@ -83,8 +81,26 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
     }
 
-    public void addToFavorites(String quoteText, String quoteAuthor) {
+    public long addToFavorites(String quoteText, String quoteAuthor) {
         Quote quote = new Quote(quoteText, quoteAuthor);
-        mDataManager.addQuote(quote).subscribe();
+        final Long[] value = new Long[1];
+        mDataManager.addQuote(quote).subscribe(new Subscriber<Long>() {
+            @Override
+            public void onCompleted() {
+                Log.e("added to favorites", "added");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("adding to favorites", e.getMessage());
+            }
+
+            @Override
+            public void onNext(Long aLong) {
+                Log.e("received long", "" + aLong);
+                value[0] = aLong;
+            }
+        });
+        return value[0];
     }
 }

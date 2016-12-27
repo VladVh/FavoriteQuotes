@@ -12,7 +12,8 @@
         android:layout_alignParentEnd="true"
         android:layout_gravity="center_vertical"
         android:onClick="deleteFromFavorites"
-        android:src="@mipmap/ic_delete_forever_black_48dp"/>
+        android:src="@mipmap/ic_delete_forever_black_48dp"
+        android:background="@drawable/favorites_button_selector"/>
 
     <TextView
         android:id="@+id/quote_item_textview"

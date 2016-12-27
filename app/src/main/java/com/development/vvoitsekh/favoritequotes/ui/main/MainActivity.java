@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.development.vvoitsekh.favoritequotes.R;
 import com.development.vvoitsekh.favoritequotes.data.local.PersistentContract;
@@ -32,6 +33,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     @BindView(R.id.author_textview) TextView mAuthorTextView;
 
     private Menu mMenu;
+    private Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         } else {
             mMainPresenter.loadQuote();
         }
+        mToast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
     }
 
     @Override
@@ -76,7 +79,17 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
 
     public void addToFavorites(View view) {
-        mMainPresenter.addToFavorites(mQuoteTextView.getText().toString(), mAuthorTextView.getText().toString());
+
+        long result = mMainPresenter.addToFavorites(mQuoteTextView.getText().toString(), mAuthorTextView.getText().toString());
+        if (result == -1) {
+            mToast.setText(R.string.favorites_already_added_toast);
+            mToast.show();
+            //Toast.makeText(this, R.string.favorites_already_added_toast, Toast.LENGTH_SHORT).show();
+        } else {
+            //Toast.makeText(this, R.string.favorites_added_toast, Toast.LENGTH_SHORT).show();
+            mToast.setText(R.string.favorites_added_toast);
+            mToast.show();
+        }
     }
 
     @Override

@@ -3,10 +3,12 @@ package com.development.vvoitsekh.favoritequotes.ui.favorites;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewParent;
 import android.widget.TextView;
@@ -54,8 +56,19 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView 
         return intent;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            Intent intent = NavUtils.getParentActivityIntent(this);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            NavUtils.navigateUpTo(this, intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public void deleteFromFavorites(View view) {
-        ViewParent parent = view.getParent().getParent();
+        ViewParent parent = view.getParent();
         RecyclerView recyclerView = (RecyclerView) parent.getParent();
         long id = recyclerView.getChildAdapterPosition((View) parent);
 

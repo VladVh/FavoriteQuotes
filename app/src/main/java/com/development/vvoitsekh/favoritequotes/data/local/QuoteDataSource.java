@@ -45,7 +45,36 @@ public class QuoteDataSource {
         return Observable.defer(new Func0<Observable<Long>>() {
             @Override
             public Observable<Long> call() {
-                return Observable.just(mDb.insert(PersistentContract.QuoteEntry.TABLE_NAME, PersistentContract.toContentValues(quote)));
+                return Observable.just(mDb.query("SELECT * FROM " + PersistentContract.QuoteEntry.TABLE_NAME + " WHERE " + PersistentContract.QuoteEntry.COLUMN_QUOTE_TEXT + "=?",
+                        quote.getQuoteText()).getCount())
+
+//                        mDb.createQuery(PersistentContract.QuoteEntry.TABLE_NAME,
+//                        "SELECT * FROM " + PersistentContract.QuoteEntry.TABLE_NAME + " WHERE " + PersistentContract.QuoteEntry.COLUMN_QUOTE_TEXT + "=?",
+//                        quote.getQuoteText())
+//                        .mapToOne(new Func1<Cursor, Long>() {
+//                            @Override
+//                            public Long call(Cursor cursor) {
+//                                return Long.valueOf(cursor.getCount());
+//                            }
+//                        })
+                        .flatMap(new Func1<Integer, Observable<Long>>() {
+                            @Override
+                            public Observable<Long> call(Integer integer) {
+                                if (integer < 1) {
+                                    return Observable.just(mDb.insert(PersistentContract.QuoteEntry.TABLE_NAME, PersistentContract.toContentValues(quote)));
+                                }
+                                return Observable.just((long) -1);
+                            }
+                        });
+//                    .flatMap(new Func1<Long, Observable<Long>>() {
+//                            @Override
+//                            public Observable<Long> call(Long aLong) {
+//                                if (aLong < 1) {
+//                                    return Observable.just(mDb.insert(PersistentContract.QuoteEntry.TABLE_NAME, PersistentContract.toContentValues(quote)));
+//                                }
+//                                return Observable.just((long) -1);
+//                            }
+//                        });
             }
         });
 //        return Observable.create(new Observable.OnSubscribe<Quote>() {

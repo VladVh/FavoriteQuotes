@@ -7,6 +7,9 @@
     <string name="quotes">Best Quotes</string>
     <string name="favorites_button">Add to favorites</string>
 
+    <string name="favorites_added_toast">Added to favorites</string>
+    <string name="favorites_already_added_toast">Quote was already added</string>
+
     <!--favorites !-->
     <string name="favorites">Favorites</string>
     <string name="favorites_empty_textview">There aren\'t any quotes yet. Please, add some quotes to your favorites</string>

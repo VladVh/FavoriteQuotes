@@ -1,5 +1,8 @@
 package com.development.vvoitsekh.favoritequotes.ui.main;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +18,7 @@ import com.development.vvoitsekh.favoritequotes.data.local.PersistentContract;
 import com.development.vvoitsekh.favoritequotes.data.model.Quote;
 import com.development.vvoitsekh.favoritequotes.ui.base.BaseActivity;
 import com.development.vvoitsekh.favoritequotes.ui.favorites.FavoritesActivity;
+import com.development.vvoitsekh.favoritequotes.utils.AppUtils;
 
 import javax.inject.Inject;
 
@@ -52,9 +56,14 @@ public class MainActivity extends BaseActivity implements MainMvpView {
             mQuoteTextView.setText(savedInstanceState.getString(PersistentContract.QuoteEntry.COLUMN_QUOTE_TEXT));
             mAuthorTextView.setText(savedInstanceState.getString(PersistentContract.QuoteEntry.COLUMN_QUOTE_AUTHOR));
         } else {
-            mMainPresenter.loadQuote();
+            mMainPresenter.loadQuote(AppUtils.getCurrentLocale(getApplicationContext()));
         }
         mToast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
+
+        Intent intent = new Intent(MainActivity.this, Receiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
+        AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
     }
 
     @Override
@@ -68,7 +77,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_refresh) {
-            mMainPresenter.loadQuote();
+            mMainPresenter.loadQuote(AppUtils.getCurrentLocale(getApplicationContext()));
             item.setEnabled(false);
             item.setVisible(false);
         } else if(item.getItemId() == R.id.action_favorites) {

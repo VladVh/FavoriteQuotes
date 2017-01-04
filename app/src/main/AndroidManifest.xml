@@ -25,6 +25,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.main.MainActivity" />
         </activity>
+
+        <receiver android:name=".ui.main.Receiver"/>
     </application>
 
 </manifest>

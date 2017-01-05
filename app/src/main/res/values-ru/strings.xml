@@ -18,4 +18,6 @@
     <!--menu !-->
     <string name="refresh_item">Новая цитата</string>
     <string name="favorites_item">Избранное</string>
+    <string name="notification_text">Заходите, вас ждут интересные цитаты</string>
+    <string name="notification_title">Известные цитаты от известных людей</string>
 </resources>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FavoriteQuotes</string>
+    <string name="app_name">Favorite Quotes</string>
 
     <string name="error_loading_quote">Error loading a quote. Please, check Internet connection.</string>
     <string name="menu_favorites">Favorites</string>
@@ -17,4 +17,8 @@
     <!--menu !-->
     <string name="refresh_item">New quote</string>
     <string name="favorites_item">Favorites</string>
+
+    <!--notification !-->
+    <string name="notification_title">Famous quotes from famous people</string>
+    <string name="notification_text">Come here to read some interesting quotes</string>
 </resources>

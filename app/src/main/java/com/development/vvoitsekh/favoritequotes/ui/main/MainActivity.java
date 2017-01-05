@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,9 +17,12 @@ import android.widget.Toast;
 import com.development.vvoitsekh.favoritequotes.R;
 import com.development.vvoitsekh.favoritequotes.data.local.PersistentContract;
 import com.development.vvoitsekh.favoritequotes.data.model.Quote;
+import com.development.vvoitsekh.favoritequotes.notification.Receiver;
 import com.development.vvoitsekh.favoritequotes.ui.base.BaseActivity;
 import com.development.vvoitsekh.favoritequotes.ui.favorites.FavoritesActivity;
 import com.development.vvoitsekh.favoritequotes.utils.AppUtils;
+
+import java.util.Calendar;
 
 import javax.inject.Inject;
 
@@ -58,12 +62,27 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         } else {
             mMainPresenter.loadQuote(AppUtils.getCurrentLocale(getApplicationContext()));
         }
-        mToast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
 
-        Intent intent = new Intent(MainActivity.this, Receiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
-        AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null || bundle.getString("notification") == null) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            Intent alarmIntent = new Intent(this, Receiver.class); // AlarmReceiver1 = broadcast receiver
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager.cancel(pendingIntent);
+
+            Calendar alarmStartTime = Calendar.getInstance();
+            Calendar now = Calendar.getInstance();
+            alarmStartTime.set(Calendar.HOUR_OF_DAY, 12);
+            alarmStartTime.set(Calendar.MINUTE, 0);
+            alarmStartTime.set(Calendar.SECOND, 0);
+            if (now.after(alarmStartTime)) {
+                alarmStartTime.add(Calendar.DATE, 1);
+            }
+            alarmManager.setRepeating(AlarmManager.RTC, alarmStartTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+            Log.d("Alarm","Alarms set for everyday 12 am.");
+        }
+        mToast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
     }
 
     @Override

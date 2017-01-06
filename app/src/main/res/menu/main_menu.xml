@@ -12,4 +12,9 @@
         android:icon="@mipmap/ic_collections_bookmark_black_48dp"
         android:title="@string/favorites_item"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@mipmap/ic_settings_black_48dp"
+        android:title="@string/settings_item"
+        app:showAsAction="ifRoom"/>
 </menu>

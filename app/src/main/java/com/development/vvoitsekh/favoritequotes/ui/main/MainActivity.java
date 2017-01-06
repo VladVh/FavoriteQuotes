@@ -20,6 +20,7 @@ import com.development.vvoitsekh.favoritequotes.data.model.Quote;
 import com.development.vvoitsekh.favoritequotes.notification.Receiver;
 import com.development.vvoitsekh.favoritequotes.ui.base.BaseActivity;
 import com.development.vvoitsekh.favoritequotes.ui.favorites.FavoritesActivity;
+import com.development.vvoitsekh.favoritequotes.ui.settings.SettingsActivity;
 import com.development.vvoitsekh.favoritequotes.utils.AppUtils;
 
 import java.util.Calendar;
@@ -101,6 +102,8 @@ public class MainActivity extends BaseActivity implements MainMvpView {
             item.setVisible(false);
         } else if(item.getItemId() == R.id.action_favorites) {
             startActivity(FavoritesActivity.getStartIntent(getApplicationContext()));
+        } else if(item.getItemId() == R.id.action_settings) {
+            startActivity(SettingsActivity.getStartIntent(getApplicationContext()));
         }
         return true;
     }

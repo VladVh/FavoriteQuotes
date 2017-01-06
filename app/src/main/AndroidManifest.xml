@@ -25,6 +25,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.main.MainActivity" />
         </activity>
+        <activity android:name=".ui.settings.SettingsActivity"
+            android:configChanges="locale">
+
+        </activity>
 
         <receiver android:name=".notification.Receiver" android:enabled="true"/>
         <service android:name=".notification.NotificationService"/>

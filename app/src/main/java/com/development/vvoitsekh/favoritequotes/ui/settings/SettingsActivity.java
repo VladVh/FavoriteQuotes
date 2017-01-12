@@ -57,6 +57,9 @@ public class SettingsActivity extends PreferenceActivity {
 //    }
 
     public static class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+        public static final String LANGUAGE_SETTING = "lang_setting";
+        public static final int LANGUAGE_CHANGED = 1000;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -79,15 +82,20 @@ public class SettingsActivity extends PreferenceActivity {
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals(getResources().getString(R.string.preference_language_key))) {
                 String lang = sharedPreferences.getString(key, "English");
-                Locale myLocale = new Locale(lang);
+                //Locale myLocale = new Locale(lang);
+//                AppUtils.setLocale(myLocale);
+//                AppUtils.updateConfig(getActivity());
                 Resources res = getResources();
-                Configuration conf = res.getConfiguration();
                 DisplayMetrics dm = res.getDisplayMetrics();
-                conf.locale = myLocale;
+                Configuration conf = res.getConfiguration();
+                conf.locale = new Locale(lang);
                 res.updateConfiguration(conf, dm);
+
                 Intent refresh = new Intent(getActivity(), SettingsActivity.class);
                 startActivity(refresh);
+                getActivity().setResult(LANGUAGE_CHANGED);
                 getActivity().finish();
+
             } else if (key.equals(getResources().getString(R.string.preference_notification_key))) {
 
             } else {

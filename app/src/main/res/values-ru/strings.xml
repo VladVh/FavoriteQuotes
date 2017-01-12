@@ -20,4 +20,7 @@
     <string name="favorites_item">Избранное</string>
     <string name="notification_text">Заходите, вас ждут интересные цитаты</string>
     <string name="notification_title">Известные цитаты от известных людей</string>
+    <string name="settings_item">Настройки</string>
+    <string name="preference_language">Язык</string>
+    <string name="preference_notification">Уведомления</string>
 </resources>

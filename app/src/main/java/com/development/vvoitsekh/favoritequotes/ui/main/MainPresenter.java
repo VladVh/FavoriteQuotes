@@ -48,7 +48,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     }
 
     public void loadQuote(Locale locale) {
-        if (locale.getLanguage().equals("ru")) {
+        if (locale.getLanguage().equals("ru_ru")) {
             loadQuoteRu();
         } else {
             loadQuoteEn();

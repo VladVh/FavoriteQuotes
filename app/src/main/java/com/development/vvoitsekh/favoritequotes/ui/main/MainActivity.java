@@ -52,6 +52,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         setContentView(R.layout.activity_quote);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(myToolbar);
+        getSupportActionBar().setTitle(R.string.quotes);
 
         ButterKnife.bind(this);
 
@@ -98,14 +99,28 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_refresh) {
             mMainPresenter.loadQuote(AppUtils.getCurrentLocale(getApplicationContext()));
+            item.setIcon(R.mipmap.ic_close_octagon_black_48dp);
             item.setEnabled(false);
-            item.setVisible(false);
         } else if(item.getItemId() == R.id.action_favorites) {
             startActivity(FavoritesActivity.getStartIntent(getApplicationContext()));
         } else if(item.getItemId() == R.id.action_settings) {
-            startActivity(SettingsActivity.getStartIntent(getApplicationContext()));
+            startActivityForResult(SettingsActivity.getStartIntent(getApplicationContext()),
+                    SettingsActivity.SettingsFragment.LANGUAGE_CHANGED);
         }
         return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 200:
+                if (resultCode == 200) {
+                    startActivity(new Intent(this, MainActivity.class));
+                    finish();
+                }
+                break;
+        }
     }
 
 
@@ -145,8 +160,9 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                mMenu.findItem(R.id.action_refresh).setIcon(R.mipmap.ic_autorenew_black_48dp);
                 mMenu.findItem(R.id.action_refresh).setEnabled(true);
-                mMenu.findItem(R.id.action_refresh).setVisible(true);
+                //mMenu.findItem(R.id.action_refresh).setVisible(true);
             }
         }, 2000);
 

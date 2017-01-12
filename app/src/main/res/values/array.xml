@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="preference_language_values">
+    <string-array name="preference_language_entries">
         <item>English</item>
         <item>Russian</item>
+    </string-array>
+    <string-array name="preference_language_values">
+        <item>en_EN</item>
+        <item>ru_RU</item>
     </string-array>
 </resources>

@@ -2,11 +2,17 @@ package com.development.vvoitsekh.favoritequotes;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.development.vvoitsekh.favoritequotes.injection.component.ApplicationComponent;
 import com.development.vvoitsekh.favoritequotes.injection.component.DaggerApplicationComponent;
 import com.development.vvoitsekh.favoritequotes.injection.module.ApplicationModule;
+
+import java.util.Locale;
 
 import rx.plugins.DebugHook;
 import rx.plugins.DebugNotification;
@@ -26,6 +32,14 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
+        conf.locale = new Locale(PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getString(res.getString(R.string.preference_language_key), "en_EN"));
+        DisplayMetrics dm = res.getDisplayMetrics();
+        res.updateConfiguration(conf, dm);
+
         RxJavaPlugins.getInstance().registerObservableExecutionHook(new DebugHook(new DebugNotificationListener() {
             public Object onNext(DebugNotification n) {
                 Log.v(TAG, "onNext on " + n);

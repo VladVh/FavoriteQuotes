@@ -12,6 +12,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.development.vvoitsekh.favoritequotes.R;
+import com.development.vvoitsekh.favoritequotes.utils.AppUtils;
 
 import java.util.Locale;
 
@@ -30,31 +31,12 @@ public class SettingsActivity extends PreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        AppUtils.setDefaultPreferences(this);
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsFragment())
                 .commit();
 
     }
-
-//    @Override
-//    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-//        if (key.equals(R.string.preference_language_key)) {
-//            String lang = sharedPreferences.getString(key, "English");
-//            Locale myLocale = new Locale(lang);
-//            Resources res = getResources();
-//            Configuration conf = res.getConfiguration();
-//            DisplayMetrics dm = res.getDisplayMetrics();
-//            conf.locale = myLocale;
-//            res.updateConfiguration(conf, dm);
-//            Intent refresh = new Intent(this, SettingsActivity.class);
-//            startActivity(refresh);
-//            finish();
-//        } else if (key.equals(R.string.preference_notification_key)) {
-//
-//        } else {
-//            Log.e("wtf", "another option");
-//        }
-//    }
 
     public static class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
         public static final String LANGUAGE_SETTING = "lang_setting";
@@ -81,10 +63,7 @@ public class SettingsActivity extends PreferenceActivity {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals(getResources().getString(R.string.preference_language_key))) {
-                String lang = sharedPreferences.getString(key, "English");
-                //Locale myLocale = new Locale(lang);
-//                AppUtils.setLocale(myLocale);
-//                AppUtils.updateConfig(getActivity());
+                String lang = sharedPreferences.getString(key, "en_EN");
                 Resources res = getResources();
                 DisplayMetrics dm = res.getDisplayMetrics();
                 Configuration conf = res.getConfiguration();
@@ -95,9 +74,13 @@ public class SettingsActivity extends PreferenceActivity {
                 startActivity(refresh);
                 getActivity().setResult(LANGUAGE_CHANGED);
                 getActivity().finish();
-
             } else if (key.equals(getResources().getString(R.string.preference_notification_key))) {
-
+                boolean isNotificationSet = sharedPreferences.getBoolean(key, true);
+                if (isNotificationSet) {
+                    AppUtils.setNotification(getActivity());
+                } else {
+                    AppUtils.cancelNotification(getActivity());
+                }
             } else {
                 Log.e("wtf", "another option");
             }

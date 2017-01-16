@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
     @BindView(R.id.quote_textview) TextView mQuoteTextView;
     @BindView(R.id.author_textview) TextView mAuthorTextView;
+    @BindView(R.id.favorites_imageButton) ImageButton mFavoritesImageButton;
 
     private Menu mMenu;
     private Toast mToast;
@@ -104,17 +106,15 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
 
     public void addToFavorites(View view) {
-
-        long result = mMainPresenter.addToFavorites(mQuoteTextView.getText().toString(), mAuthorTextView.getText().toString());
-        if (result == -1) {
-            mToast.setText(R.string.favorites_already_added_toast);
-            mToast.show();
-            //Toast.makeText(this, R.string.favorites_already_added_toast, Toast.LENGTH_SHORT).show();
-        } else {
-            //Toast.makeText(this, R.string.favorites_added_toast, Toast.LENGTH_SHORT).show();
-            mToast.setText(R.string.favorites_added_toast);
-            mToast.show();
-        }
+        mMainPresenter.addToFavorites(mQuoteTextView.getText().toString(), mAuthorTextView.getText().toString());
+        showExistsInFavorites(true);
+//        if (result == -1) {
+//            mToast.setText(R.string.favorites_already_added_toast);
+//            mToast.show();
+//        } else {
+//            mToast.setText(R.string.favorites_added_toast);
+//            mToast.show();
+//        }
     }
 
     @Override
@@ -133,6 +133,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
     @Override
     public void showQuote(Quote quote) {
+        mMainPresenter.isQuoteInFavorites(quote.getQuoteText());
         mQuoteTextView.setText(quote.getQuoteText());
         mAuthorTextView.setText(quote.getQuoteAuthor());
         Handler handler = new Handler();
@@ -141,10 +142,20 @@ public class MainActivity extends BaseActivity implements MainMvpView {
             public void run() {
                 mMenu.findItem(R.id.action_refresh).setIcon(R.mipmap.ic_autorenew_black_48dp);
                 mMenu.findItem(R.id.action_refresh).setEnabled(true);
-                //mMenu.findItem(R.id.action_refresh).setVisible(true);
             }
         }, 2000);
 
+    }
+
+    @Override
+    public void showExistsInFavorites(boolean exists) {
+        if (exists) {
+            mFavoritesImageButton.setImageResource(R.mipmap.ic_heart_black_48dp);
+            mFavoritesImageButton.setEnabled(false);
+        } else {
+            mFavoritesImageButton.setImageResource(R.mipmap.ic_thumb_up_black_48dp);
+            mFavoritesImageButton.setEnabled(true);
+        }
     }
 
     @Override

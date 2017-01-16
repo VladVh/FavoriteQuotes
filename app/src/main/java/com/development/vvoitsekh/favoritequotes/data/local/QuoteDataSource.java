@@ -25,7 +25,6 @@ public class QuoteDataSource {
 
     @Inject
     public QuoteDataSource(QuoteDBHelper quoteDBHelper) {
-        //QuoteDBHelper mDbHelper = new QuoteDBHelper(context);
         SqlBrite.Builder builder = new SqlBrite.Builder();
         mDb = builder.build().wrapDatabaseHelper(quoteDBHelper, Schedulers.immediate());
     }
@@ -47,16 +46,6 @@ public class QuoteDataSource {
             public Observable<Long> call() {
                 return Observable.just(mDb.query("SELECT * FROM " + PersistentContract.QuoteEntry.TABLE_NAME + " WHERE " + PersistentContract.QuoteEntry.COLUMN_QUOTE_TEXT + "=?",
                         quote.getQuoteText()).getCount())
-
-//                        mDb.createQuery(PersistentContract.QuoteEntry.TABLE_NAME,
-//                        "SELECT * FROM " + PersistentContract.QuoteEntry.TABLE_NAME + " WHERE " + PersistentContract.QuoteEntry.COLUMN_QUOTE_TEXT + "=?",
-//                        quote.getQuoteText())
-//                        .mapToOne(new Func1<Cursor, Long>() {
-//                            @Override
-//                            public Long call(Cursor cursor) {
-//                                return Long.valueOf(cursor.getCount());
-//                            }
-//                        })
                         .flatMap(new Func1<Integer, Observable<Long>>() {
                             @Override
                             public Observable<Long> call(Integer integer) {
@@ -66,37 +55,8 @@ public class QuoteDataSource {
                                 return Observable.just((long) -1);
                             }
                         });
-//                    .flatMap(new Func1<Long, Observable<Long>>() {
-//                            @Override
-//                            public Observable<Long> call(Long aLong) {
-//                                if (aLong < 1) {
-//                                    return Observable.just(mDb.insert(PersistentContract.QuoteEntry.TABLE_NAME, PersistentContract.toContentValues(quote)));
-//                                }
-//                                return Observable.just((long) -1);
-//                            }
-//                        });
             }
         });
-//        return Observable.create(new Observable.OnSubscribe<Quote>() {
-//            @Override
-//            public void call(Subscriber<? super Quote> subscriber) {
-//                if (subscriber.isUnsubscribed()) {
-//                    return;
-//                }
-//                BriteDatabase.Transaction transaction = mDb.newTransaction();
-//                try {
-//                    long result = mDb.insert(PersistentContract.QuoteEntry.TABLE_NAME,
-//                            PersistentContract.toContentValues(quote));
-//                    if (result >= 0) {
-//                        subscriber.onNext(quote);
-//                    }
-//                    transaction.markSuccessful();
-//                    subscriber.onCompleted();
-//                } finally {
-//                    transaction.end();
-//                }
-//            }
-//        });
     }
 
     public Observable<Integer> removeQuote(final Quote quote) {

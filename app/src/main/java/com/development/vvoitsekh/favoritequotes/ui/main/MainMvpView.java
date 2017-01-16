@@ -10,6 +10,8 @@ public interface MainMvpView extends MvpView {
 
     void showQuote(Quote quote);
 
+    void showExistsInFavorites(boolean exists);
+
     void showError();
 
 }

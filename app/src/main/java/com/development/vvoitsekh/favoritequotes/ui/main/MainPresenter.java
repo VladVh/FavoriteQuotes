@@ -9,6 +9,7 @@ import com.development.vvoitsekh.favoritequotes.ui.base.BasePresenter;
 import com.development.vvoitsekh.favoritequotes.utils.JsonUtils;
 import com.development.vvoitsekh.favoritequotes.utils.RxUtil;
 
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -125,6 +126,33 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                 });
     }
 
+    public void isQuoteInFavorites(final String quote) {
+        mSubscription = mDataManager.getQuotes()
+                //.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Quote>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("DB error", "error loading the quotes");
+                        getMvpView().showError();
+                    }
+
+                    @Override
+                    public void onNext(List<Quote> quotes) {
+                        for (Quote quoteItem : quotes) {
+                            if (quoteItem.getQuoteText().equals(quote)) {
+                                getMvpView().showExistsInFavorites(true);
+                            }
+                        }
+                        getMvpView().showExistsInFavorites(false);
+                    }
+                });
+    }
 
     public long addToFavorites(String quoteText, String quoteAuthor) {
         Quote quote = new Quote(quoteText, quoteAuthor);

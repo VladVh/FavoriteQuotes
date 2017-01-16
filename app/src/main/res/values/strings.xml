@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Favorite Quotes</string>
 
@@ -24,9 +25,9 @@
     <string name="notification_text">Come here to read some interesting quotes</string>
 
     <!--preferences !-->
-    <string name="preference_language_key">pref_language</string>
+    <string name="preference_language_key" translatable="false">pref_language</string>
     <string name="preference_language">Language</string>
-    <string name="preference_notification_key">pref_notification</string>
+    <string name="preference_notification_key" translatable="false">pref_notification</string>
     <string name="preference_notification">Notifications</string>
 
 </resources>

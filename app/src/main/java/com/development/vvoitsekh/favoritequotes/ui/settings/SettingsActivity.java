@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import com.development.vvoitsekh.favoritequotes.R;
 import com.development.vvoitsekh.favoritequotes.utils.AppUtils;
@@ -39,7 +38,6 @@ public class SettingsActivity extends PreferenceActivity {
     }
 
     public static class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
-        public static final String LANGUAGE_SETTING = "lang_setting";
         public static final int LANGUAGE_CHANGED = 1000;
 
         @Override
@@ -81,8 +79,6 @@ public class SettingsActivity extends PreferenceActivity {
                 } else {
                     AppUtils.cancelNotification(getActivity());
                 }
-            } else {
-                Log.e("wtf", "another option");
             }
         }
     }

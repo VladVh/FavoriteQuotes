@@ -3,6 +3,8 @@ package com.development.vvoitsekh.favoritequotes.ui.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.development.vvoitsekh.favoritequotes.R;
 import com.development.vvoitsekh.favoritequotes.data.local.PersistentContract;
@@ -38,7 +39,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     @BindView(R.id.favorites_imageButton) ImageButton mFavoritesImageButton;
 
     private Menu mMenu;
-    private Toast mToast;
+    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +61,6 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         } else {
             mMainPresenter.loadQuote(AppUtils.getCurrentLocale(getApplicationContext()));
         }
-
-//        Bundle bundle = getIntent().getExtras();
-//        if (bundle == null || bundle.getString("notification") == null) {
-//            AppUtils.setNotification(this);
-//        }
-        mToast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
     }
 
     @Override
@@ -73,6 +68,16 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         mMenu = menu;
+
+        MenuItem item = mMenu.findItem(R.id.action_share);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, mQuoteTextView.getText());
+        sendIntent.setType("text/plain");
+        setShareIntent(sendIntent);
+
         return true;
     }
 
@@ -104,17 +109,15 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         }
     }
 
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
+    }
 
     public void addToFavorites(View view) {
         mMainPresenter.addToFavorites(mQuoteTextView.getText().toString(), mAuthorTextView.getText().toString());
         showExistsInFavorites(true);
-//        if (result == -1) {
-//            mToast.setText(R.string.favorites_already_added_toast);
-//            mToast.show();
-//        } else {
-//            mToast.setText(R.string.favorites_added_toast);
-//            mToast.show();
-//        }
     }
 
     @Override

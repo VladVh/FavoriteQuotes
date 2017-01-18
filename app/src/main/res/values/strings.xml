@@ -17,6 +17,7 @@
 
     <!--menu !-->
     <string name="refresh_item">New quote</string>
+    <string name="share_item">Share</string>
     <string name="favorites_item">Favorites</string>
     <string name="settings_item">Settings</string>
 

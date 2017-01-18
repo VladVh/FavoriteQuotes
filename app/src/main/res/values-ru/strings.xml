@@ -23,6 +23,7 @@
     <string name="settings_item">Настройки</string>
     <string name="preference_language">Язык</string>
     <string name="preference_notification">Уведомления</string>
+    <string name="share_item">Поделиться</string>
 
     <!--preferences !-->
 </resources>

@@ -8,6 +8,11 @@
         android:title="@string/refresh_item"
         app:showAsAction="ifRoom"/>
     <item
+        android:id="@+id/action_share"
+        android:icon="@mipmap/ic_share_variant_black_48dp"
+        android:title="@string/share_item"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/action_favorites"
         android:icon="@mipmap/ic_collections_bookmark_black_48dp"
         android:title="@string/favorites_item"

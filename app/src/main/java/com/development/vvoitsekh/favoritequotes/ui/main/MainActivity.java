@@ -3,7 +3,6 @@ package com.development.vvoitsekh.favoritequotes.ui.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -32,11 +31,15 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements MainMvpView {
 
-    @Inject MainPresenter mMainPresenter;
+    @Inject
+    MainPresenter mMainPresenter;
 
-    @BindView(R.id.quote_textview) TextView mQuoteTextView;
-    @BindView(R.id.author_textview) TextView mAuthorTextView;
-    @BindView(R.id.favorites_imageButton) ImageButton mFavoritesImageButton;
+    @BindView(R.id.quote_textview)
+    TextView mQuoteTextView;
+    @BindView(R.id.author_textview)
+    TextView mAuthorTextView;
+    @BindView(R.id.favorites_imageButton)
+    ImageButton mFavoritesImageButton;
 
     private Menu mMenu;
     private ShareActionProvider mShareActionProvider;
@@ -69,14 +72,14 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         inflater.inflate(R.menu.main_menu, menu);
         mMenu = menu;
 
-        MenuItem item = mMenu.findItem(R.id.action_share);
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, mQuoteTextView.getText());
-        sendIntent.setType("text/plain");
-        setShareIntent(sendIntent);
+//        MenuItem item = mMenu.findItem(R.id.action_share);
+//        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+//
+//        Intent sendIntent = new Intent();
+//        sendIntent.setAction(Intent.ACTION_SEND);
+//        sendIntent.putExtra(Intent.EXTRA_TEXT, mQuoteTextView.getText());
+//        sendIntent.setType("text/plain");
+//        setShareIntent(sendIntent);
 
         return true;
     }
@@ -87,9 +90,15 @@ public class MainActivity extends BaseActivity implements MainMvpView {
             mMainPresenter.loadQuote(AppUtils.getCurrentLocale(getApplicationContext()));
             item.setIcon(R.mipmap.ic_close_octagon_black_48dp);
             item.setEnabled(false);
-        } else if(item.getItemId() == R.id.action_favorites) {
+        } else if (item.getItemId() == R.id.action_share) {
+            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name);
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, mQuoteTextView.getText());
+            startActivity(Intent.createChooser(sharingIntent, "Share using"));
+        } else if (item.getItemId() == R.id.action_favorites) {
             startActivity(FavoritesActivity.getStartIntent(getApplicationContext()));
-        } else if(item.getItemId() == R.id.action_settings) {
+        } else if (item.getItemId() == R.id.action_settings) {
             startActivityForResult(SettingsActivity.getStartIntent(getApplicationContext()),
                     SettingsActivity.SettingsFragment.LANGUAGE_CHANGED);
         }

@@ -25,6 +25,7 @@ public class BaseActivity extends AppCompatActivity {
     private ActivityComponent mActivityComponent;
     private long mActivityId;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

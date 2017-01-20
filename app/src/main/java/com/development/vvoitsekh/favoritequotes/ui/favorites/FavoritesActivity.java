@@ -43,6 +43,7 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mQuotesAdapter.setContext(this);
         mRecyclerView.setAdapter(mQuotesAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), R.drawable.divider));

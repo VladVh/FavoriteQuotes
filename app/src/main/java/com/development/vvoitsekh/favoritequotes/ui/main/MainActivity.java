@@ -3,7 +3,6 @@ package com.development.vvoitsekh.favoritequotes.ui.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +41,6 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     ImageButton mFavoritesImageButton;
 
     private Menu mMenu;
-    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,15 +70,6 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         inflater.inflate(R.menu.main_menu, menu);
         mMenu = menu;
 
-//        MenuItem item = mMenu.findItem(R.id.action_share);
-//        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-//
-//        Intent sendIntent = new Intent();
-//        sendIntent.setAction(Intent.ACTION_SEND);
-//        sendIntent.putExtra(Intent.EXTRA_TEXT, mQuoteTextView.getText());
-//        sendIntent.setType("text/plain");
-//        setShareIntent(sendIntent);
-
         return true;
     }
 
@@ -94,7 +83,9 @@ public class MainActivity extends BaseActivity implements MainMvpView {
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
             sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name);
-            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, mQuoteTextView.getText());
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, mQuoteTextView.getText()
+                    + "  \u00A9 "
+                    + mAuthorTextView.getText());
             startActivity(Intent.createChooser(sharingIntent, "Share using"));
         } else if (item.getItemId() == R.id.action_favorites) {
             startActivity(FavoritesActivity.getStartIntent(getApplicationContext()));
@@ -115,12 +106,6 @@ public class MainActivity extends BaseActivity implements MainMvpView {
                     finish();
                 }
                 break;
-        }
-    }
-
-    private void setShareIntent(Intent shareIntent) {
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(shareIntent);
         }
     }
 

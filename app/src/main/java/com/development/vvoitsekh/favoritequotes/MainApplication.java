@@ -11,6 +11,8 @@ import android.util.Log;
 import com.development.vvoitsekh.favoritequotes.injection.component.ApplicationComponent;
 import com.development.vvoitsekh.favoritequotes.injection.component.DaggerApplicationComponent;
 import com.development.vvoitsekh.favoritequotes.injection.module.ApplicationModule;
+import com.development.vvoitsekh.favoritequotes.notification.NotificationService;
+import com.development.vvoitsekh.favoritequotes.utils.AppUtils;
 
 import java.util.Locale;
 
@@ -39,6 +41,7 @@ public class MainApplication extends Application {
                 .getString(res.getString(R.string.preference_language_key), "en_EN"));
         DisplayMetrics dm = res.getDisplayMetrics();
         res.updateConfiguration(conf, dm);
+        NotificationService.setServiceAlarm(this, AppUtils.isNotificationSet(this));
 
         RxJavaPlugins.getInstance().registerObservableExecutionHook(new DebugHook(new DebugNotificationListener() {
             public Object onNext(DebugNotification n) {

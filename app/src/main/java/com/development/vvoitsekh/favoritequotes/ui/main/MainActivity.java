@@ -1,5 +1,6 @@
 package com.development.vvoitsekh.favoritequotes.ui.main;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,6 +43,10 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
     private Menu mMenu;
 
+    public static Intent newIntent(Context context) {
+        return new Intent(context, MainActivity.class);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +65,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
             mQuoteTextView.setText(savedInstanceState.getString(PersistentContract.QuoteEntry.COLUMN_QUOTE_TEXT));
             mAuthorTextView.setText(savedInstanceState.getString(PersistentContract.QuoteEntry.COLUMN_QUOTE_AUTHOR));
         } else {
-            mMainPresenter.loadQuote(AppUtils.getCurrentLocale(getApplicationContext()));
+            mMainPresenter.loadQuote(AppUtils.getCurrentLocale(this));
         }
     }
 
@@ -76,7 +81,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_refresh) {
-            mMainPresenter.loadQuote(AppUtils.getCurrentLocale(getApplicationContext()));
+            mMainPresenter.loadQuote(AppUtils.getCurrentLocale(this));
             item.setIcon(R.mipmap.ic_close_octagon_black_48dp);
             item.setEnabled(false);
         } else if (item.getItemId() == R.id.action_share) {
@@ -88,9 +93,9 @@ public class MainActivity extends BaseActivity implements MainMvpView {
                     + mAuthorTextView.getText());
             startActivity(Intent.createChooser(sharingIntent, "Share using"));
         } else if (item.getItemId() == R.id.action_favorites) {
-            startActivity(FavoritesActivity.getStartIntent(getApplicationContext()));
+            startActivity(FavoritesActivity.newIntent(this));
         } else if (item.getItemId() == R.id.action_settings) {
-            startActivityForResult(SettingsActivity.getStartIntent(getApplicationContext()),
+            startActivityForResult(SettingsActivity.newIntent(this),
                     SettingsActivity.SettingsFragment.LANGUAGE_CHANGED);
         }
         return true;
@@ -102,7 +107,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         switch (requestCode) {
             case SettingsActivity.SettingsFragment.LANGUAGE_CHANGED:
                 if (resultCode == SettingsActivity.SettingsFragment.LANGUAGE_CHANGED) {
-                    startActivity(new Intent(this, MainActivity.class));
+                    startActivity(MainActivity.newIntent(this));
                     finish();
                 }
                 break;

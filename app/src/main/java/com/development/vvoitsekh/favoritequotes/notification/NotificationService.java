@@ -1,5 +1,6 @@
 package com.development.vvoitsekh.favoritequotes.notification;
 
+import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -12,21 +13,19 @@ import android.support.v4.app.NotificationCompat;
 import com.development.vvoitsekh.favoritequotes.R;
 import com.development.vvoitsekh.favoritequotes.ui.main.MainActivity;
 
+import java.util.Calendar;
+
 /**
  * Created by v.voitsekh on 05.01.2017.
  */
 
 public class NotificationService extends IntentService {
 
-    private static int NOTIFICATION_ID = 1;
+    private static final long POLL_INTERVAL = AlarmManager.INTERVAL_DAY;
+    private static final int NOTIFICATION_ID = 1;
 
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
-     */
-    public NotificationService(String name) {
-        super(name);
+    public static Intent newIntent(Context context) {
+        return new Intent(context, NotificationService.class);
     }
 
     public NotificationService() {
@@ -50,8 +49,38 @@ public class NotificationService extends IntentService {
                 .setPriority(8)
                 .setContentTitle(getResources().getString(R.string.notification_title))
                 .setContentText(getResources().getString(R.string.notification_text)).build();
-
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, notification);
     }
+
+    public static void setServiceAlarm(Context context, boolean isOn) {
+        Intent intent = NotificationService.newIntent(context);
+        PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (isOn) {
+            Calendar alarmStartTime = Calendar.getInstance();
+            Calendar now = Calendar.getInstance();
+            alarmStartTime.set(Calendar.HOUR_OF_DAY, 12);
+            alarmStartTime.set(Calendar.MINUTE, 0);
+            alarmStartTime.set(Calendar.SECOND, 0);
+            if (now.after(alarmStartTime)) {
+                alarmStartTime.add(Calendar.DATE, 1);
+            }
+            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
+                    alarmStartTime.getTimeInMillis(), POLL_INTERVAL, pendingIntent);
+        } else {
+            alarmManager.cancel(pendingIntent);
+            pendingIntent.cancel();
+        }
+    }
+
+    public static boolean isServiceAlarmOn(Context context) {
+        Intent intent = NotificationService.newIntent(context);
+        PendingIntent pendingIntent = PendingIntent.getService(context,
+                0, intent, PendingIntent.FLAG_NO_CREATE);
+        return pendingIntent != null;
+    }
+
+
 }

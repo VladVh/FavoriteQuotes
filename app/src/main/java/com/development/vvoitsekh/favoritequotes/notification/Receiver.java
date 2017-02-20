@@ -11,8 +11,13 @@ import android.content.Intent;
 public class Receiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent serviceIntent = new Intent(context, NotificationService.class);
-        //serviceIntent.setData((Uri.parse("custom://"+System.currentTimeMillis())));
-        context.startService(serviceIntent);
+//        Intent serviceIntent = new Intent(context, NotificationService.class);
+//        //serviceIntent.setData((Uri.parse("custom://"+System.currentTimeMillis())));
+//        context.startService(serviceIntent);
+
+//        int requestCode = intent.getIntExtra(NotificationService.REQUEST_CODE, 0);
+//        Notification notification = (Notification) intent.getParcelableExtra(NotificationService.NOTIFICATION);
+//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+//        notificationManager.notify(requestCode, notification);
     }
 }

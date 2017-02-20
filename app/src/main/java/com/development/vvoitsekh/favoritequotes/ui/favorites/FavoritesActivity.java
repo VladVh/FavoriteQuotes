@@ -33,6 +33,10 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView 
     @BindView(R.id.favorites_empty_textView) TextView mEmptyTextView;
     @BindView(R.id.main_toolbar) Toolbar mToolbar;
 
+    public static Intent newIntent(Context context) {
+        return new Intent(context, FavoritesActivity.class);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,15 +50,10 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView 
         mQuotesAdapter.setContext(this);
         mRecyclerView.setAdapter(mQuotesAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), R.drawable.divider));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, R.drawable.divider));
 
         mFavoritesPresenter.attachView(this);
         mFavoritesPresenter.getQuotes();
-    }
-
-    public static Intent getStartIntent(Context context) {
-        Intent intent = new Intent(context, FavoritesActivity.class);
-        return intent;
     }
 
     @Override

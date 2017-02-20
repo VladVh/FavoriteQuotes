@@ -21,9 +21,8 @@ import java.util.Locale;
 
 public class SettingsActivity extends PreferenceActivity {
 
-    public static Intent getStartIntent(Context context) {
-        Intent intent = new Intent(context, SettingsActivity.class);
-        return intent;
+    public static Intent newIntent(Context context) {
+        return new Intent(context, SettingsActivity.class);
     }
 
     @Override
@@ -61,7 +60,7 @@ public class SettingsActivity extends PreferenceActivity {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals(getResources().getString(R.string.preference_language_key))) {
-                String lang = sharedPreferences.getString(key, "en_EN");
+                String lang = sharedPreferences.getString(key, "en");
                 Resources res = getResources();
                 DisplayMetrics dm = res.getDisplayMetrics();
                 Configuration conf = res.getConfiguration();
@@ -74,11 +73,7 @@ public class SettingsActivity extends PreferenceActivity {
                 getActivity().finish();
             } else if (key.equals(getResources().getString(R.string.preference_notification_key))) {
                 boolean isNotificationSet = sharedPreferences.getBoolean(key, true);
-                if (isNotificationSet) {
-                    AppUtils.setNotification(getActivity());
-                } else {
-                    AppUtils.cancelNotification(getActivity());
-                }
+                AppUtils.setNotification(getActivity(), isNotificationSet);
             }
         }
     }

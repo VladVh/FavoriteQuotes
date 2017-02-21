@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.util.DisplayMetrics;
@@ -14,6 +15,8 @@ import com.development.vvoitsekh.favoritequotes.R;
 import com.development.vvoitsekh.favoritequotes.utils.AppUtils;
 
 import java.util.Locale;
+
+import static com.development.vvoitsekh.favoritequotes.R.string.preference_language_key;
 
 /**
  * Created by v.voitsekh on 06.01.2017.
@@ -43,6 +46,9 @@ public class SettingsActivity extends PreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
+
+            ListPreference preference = (ListPreference) getPreferenceScreen().findPreference(getResources().getString(R.string.preference_language_key));
+            preference.setValue(AppUtils.getCurrentLocale(getActivity()).getLanguage());
         }
 
         @Override
@@ -59,7 +65,7 @@ public class SettingsActivity extends PreferenceActivity {
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (key.equals(getResources().getString(R.string.preference_language_key))) {
+            if (key.equals(getResources().getString(preference_language_key))) {
                 String lang = sharedPreferences.getString(key, "en");
                 Resources res = getResources();
                 DisplayMetrics dm = res.getDisplayMetrics();

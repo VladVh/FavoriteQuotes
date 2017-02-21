@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.development.vvoitsekh.favoritequotes.R;
 import com.development.vvoitsekh.favoritequotes.data.model.Quote;
+import com.development.vvoitsekh.favoritequotes.ui.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,13 +53,11 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.QuotesView
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                sharingIntent.setType("text/plain");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name);
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, holder.mQuoteTextView.getText()
-                        + "  \u00A9 "
-                        + holder.mAuthorTextView.getText());
-                mContext.startActivity(Intent.createChooser(sharingIntent, "Share using"));
+                Intent intent = MainActivity.newIntent(mContext,
+                        new Quote(holder.mQuoteTextView.getText().toString(),
+                                holder.mAuthorTextView.getText().toString()));
+                mContext.startActivity(intent);
+
             }
         });
     }

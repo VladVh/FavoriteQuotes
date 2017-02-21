@@ -36,5 +36,5 @@
         android:layout_centerVertical="true"
         android:text="@string/favorites_empty_textview"
         android:textColor="@android:color/black"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 </RelativeLayout>

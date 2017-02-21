@@ -38,7 +38,7 @@ public class MainApplication extends Application {
         Configuration conf = res.getConfiguration();
         conf.locale = new Locale(PreferenceManager
                 .getDefaultSharedPreferences(this)
-                .getString(res.getString(R.string.preference_language_key), "en_EN"));
+                .getString(res.getString(R.string.preference_language_key), "en"));
         DisplayMetrics dm = res.getDisplayMetrics();
         res.updateConfiguration(conf, dm);
         NotificationService.setServiceAlarm(this, AppUtils.isNotificationSet(this));

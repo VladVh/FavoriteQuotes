@@ -21,9 +21,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by v.voitsekh on 14.12.2016.
- */
 
 public class MainPresenter extends BasePresenter<MainMvpView> {
 
@@ -31,7 +28,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     private Subscription mSubscription;
 
     @Inject
-    public MainPresenter(DataManager dataManager) {
+     MainPresenter(DataManager dataManager) {
         mDataManager = dataManager;
     }
 
@@ -48,7 +45,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         }
     }
 
-    public void loadQuote(Locale locale) {
+     void loadQuote(Locale locale) {
         if (locale.getLanguage().equalsIgnoreCase("ru")) {
             loadQuoteRu();
         } else {
@@ -126,9 +123,10 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                 });
     }
 
-    public void isQuoteInFavorites(final String quote) {
+     void isQuoteInFavorites(final String quote) {
+        RxUtil.unsubscribe(mSubscription);
         mSubscription = mDataManager.getQuotes()
-                //.subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Quote>>() {
                     @Override
@@ -147,6 +145,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                         for (Quote quoteItem : quotes) {
                             if (quoteItem.getQuoteText().equals(quote)) {
                                 getMvpView().showExistsInFavorites(true);
+                                return;
                             }
                         }
                         getMvpView().showExistsInFavorites(false);
@@ -154,10 +153,13 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                 });
     }
 
-    public long addToFavorites(String quoteText, String quoteAuthor) {
+    void addToFavorites(String quoteText, String quoteAuthor) {
         Quote quote = new Quote(quoteText, quoteAuthor);
-        final Long[] value = new Long[1];
-        mDataManager.addQuote(quote).subscribe(new Subscriber<Long>() {
+        RxUtil.unsubscribe(mSubscription);
+        mDataManager.addQuote(quote)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Long>() {
             @Override
             public void onCompleted() {
                 Log.e("added to favorites", "added");
@@ -171,9 +173,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
             @Override
             public void onNext(Long aLong) {
                 Log.e("received long", "" + aLong);
-                value[0] = aLong;
             }
         });
-        return value[0];
     }
 }

@@ -25,11 +25,12 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by v.voitsekh on 14.12.2016.
- */
 
 public class MainActivity extends BaseActivity implements MainMvpView {
+
+    private static final String TAG = "MainActivity";
+    private static final String QUOTE_TEXT = "quote_text";
+    private static final String QUOTE_AUTHOR = "quote_author";
 
     @Inject
     MainPresenter mMainPresenter;
@@ -42,6 +43,16 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     ImageButton mFavoritesImageButton;
 
     private Menu mMenu;
+
+    public static Intent newIntent(Context context, Quote quote) {
+        Intent intent = new Intent(context, MainActivity.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(QUOTE_TEXT, quote.getQuoteText());
+        bundle.putString(QUOTE_AUTHOR, quote.getQuoteAuthor());
+        intent.putExtras(bundle);
+        return intent;
+    }
 
     public static Intent newIntent(Context context) {
         return new Intent(context, MainActivity.class);
@@ -61,9 +72,14 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
         mMainPresenter.attachView(this);
 
+        Bundle extras = getIntent().getExtras();
+
         if (savedInstanceState != null) {
             mQuoteTextView.setText(savedInstanceState.getString(PersistentContract.QuoteEntry.COLUMN_QUOTE_TEXT));
             mAuthorTextView.setText(savedInstanceState.getString(PersistentContract.QuoteEntry.COLUMN_QUOTE_AUTHOR));
+        } else if (extras != null) {
+            mQuoteTextView.setText(extras.getString(QUOTE_TEXT));
+            mAuthorTextView.setText(extras.getString(QUOTE_AUTHOR));
         } else {
             mMainPresenter.loadQuote(AppUtils.getCurrentLocale(this));
         }
@@ -107,7 +123,10 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         switch (requestCode) {
             case SettingsActivity.SettingsFragment.LANGUAGE_CHANGED:
                 if (resultCode == SettingsActivity.SettingsFragment.LANGUAGE_CHANGED) {
-                    startActivity(MainActivity.newIntent(this));
+                    startActivity(MainActivity.newIntent(this,
+                            new Quote(mQuoteTextView.getText().toString(),
+                                    mAuthorTextView.getText().toString()))
+                    );
                     finish();
                 }
                 break;
@@ -127,9 +146,16 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (mQuoteTextView.getText().length() > 0) {
+            mMainPresenter.isQuoteInFavorites(mQuoteTextView.getText().toString());
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-
         mMainPresenter.detachView();
     }
 

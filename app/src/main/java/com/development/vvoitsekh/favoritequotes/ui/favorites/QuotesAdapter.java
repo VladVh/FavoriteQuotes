@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.development.vvoitsekh.favoritequotes.R;
 import com.development.vvoitsekh.favoritequotes.data.model.Quote;
+import com.development.vvoitsekh.favoritequotes.injection.ActivityContext;
 import com.development.vvoitsekh.favoritequotes.ui.main.MainActivity;
 
 import java.util.ArrayList;
@@ -29,23 +30,27 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.QuotesView
     private List<Quote> mQuotes;
     private Context mContext;
 
+    protected List<Quote> mSelectedQuotes;
+
     @Inject
-    public QuotesAdapter() {
+    public QuotesAdapter(@ActivityContext Context context) {
+        mSelectedQuotes = new ArrayList<>();
         mQuotes = new ArrayList<>();
-        mContext = null;
+        mContext = context;
     }
 
     public void setContext(Context context) {
         mContext = context;
     }
+
     @Override
     public QuotesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quote, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quote_cardview, parent, false);
         return new QuotesViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final QuotesViewHolder holder, int position) {
+    public void onBindViewHolder(final QuotesViewHolder holder, final int position) {
         Quote quote = mQuotes.get(position);
         holder.mQuoteTextView.setText(quote.getQuoteText());
         holder.mAuthorTextView.setText(quote.getQuoteAuthor());
@@ -60,11 +65,18 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.QuotesView
 
             }
         });
+        if (mSelectedQuotes.contains(mQuotes.get(position))) {
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.colorLightGray));
+        } else {
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.cardview_light_background));
+        }
     }
 
     public void setQuotes(List<Quote> quotes) {
         mQuotes = quotes;
     }
+
+    public List<Quote> getQuotes() { return mQuotes; }
 
     @Override
     public int getItemCount() {
@@ -76,6 +88,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.QuotesView
     }
 
     public void delete(Quote quote) {
+        int index = mQuotes.indexOf(quote);
         mQuotes.remove(quote);
     }
 
@@ -88,5 +101,6 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.QuotesView
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+
     }
 }

@@ -15,5 +15,7 @@ public interface FavoritesMvpView extends MvpView {
 
     void showFavoritesEmpty();
 
+    void checkItemsCount();
+
     void showError();
 }

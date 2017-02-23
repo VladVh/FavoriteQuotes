@@ -67,6 +67,23 @@ public class FavoritesPresenter extends BasePresenter<FavoritesMvpView> {
     }
 
     public void deleteQuoteFromFavorites(Quote quote) {
-        mDataManager.deleteQuote(quote).subscribe();
+        checkViewAttached();
+        RxUtil.unsubscribe(mSubscription);
+        mDataManager.deleteQuote(quote).subscribe(new Subscriber<Integer>() {
+            @Override
+            public void onCompleted() {
+                getMvpView().checkItemsCount();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+
+            }
+        });
     }
 }

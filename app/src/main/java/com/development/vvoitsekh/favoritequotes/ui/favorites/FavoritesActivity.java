@@ -4,23 +4,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.development.vvoitsekh.favoritequotes.R;
 import com.development.vvoitsekh.favoritequotes.data.model.Quote;
+import com.development.vvoitsekh.favoritequotes.injection.ActivityContext;
 import com.development.vvoitsekh.favoritequotes.ui.base.BaseActivity;
-import com.development.vvoitsekh.favoritequotes.utils.AlertDialogHelper;
+import com.development.vvoitsekh.favoritequotes.ui.favorites.multiselect.ModalMultiSelectorCallback;
+import com.development.vvoitsekh.favoritequotes.ui.favorites.multiselect.MultiSelector;
+import com.development.vvoitsekh.favoritequotes.ui.favorites.multiselect.MultiSelectorBindingHolder;
+import com.development.vvoitsekh.favoritequotes.ui.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,20 +36,18 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FavoritesActivity extends BaseActivity implements FavoritesMvpView, AlertDialogHelper.AlertDialogListener {
+public class FavoritesActivity extends BaseActivity implements FavoritesMvpView {
 
     @Inject FavoritesPresenter mFavoritesPresenter;
-    @Inject QuotesAdapter mQuotesAdapter;
-    @Inject AlertDialogHelper mAlertDialogHelper;
+    private QuotesAdapter mQuotesAdapter;
 
     @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
     @BindView(R.id.favorites_empty_textView) TextView mEmptyTextView;
     @BindView(R.id.main_toolbar) Toolbar mToolbar;
 
-    boolean isMultiSelect = false;
-    ActionMode mActionMode;
-
-    ArrayList<Quote> multiselect_list = new ArrayList<>();
+    private MultiSelector mMultiSelector = new MultiSelector();
+    private boolean isActionModeStarted = false;
+    private ActionMode mActionMode;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, FavoritesActivity.class);
@@ -58,46 +62,17 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView,
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.favorites);
 
-
-        //mQuotesAdapter.setContext(this);
+        mQuotesAdapter = new QuotesAdapter(this);
         mRecyclerView.setAdapter(mQuotesAdapter);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         //mRecyclerView.addItemDecoration(new DividerItemDecoration(this, R.drawable.divider));
-
-        mRecyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(FavoritesActivity.this,
-                        mRecyclerView,
-                        new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                if (isMultiSelect)
-                                    multi_select(position);
-                                else
-                                    Toast.makeText(getApplicationContext(), "Details Page", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onItemLongClick(View view, int position) {
-                                if (!isMultiSelect) {
-                                    multiselect_list = new ArrayList<>();
-                                    isMultiSelect = true;
-
-                                    if (mActionMode == null) {
-                                        getSupportActionBar().hide();
-                                        mActionMode = startSupportActionMode(mActionModeCallback);
-                                    }
-                                }
-
-                                multi_select(position);
-
-                            }
-                        }));
 
         mFavoritesPresenter.attachView(this);
         mFavoritesPresenter.getQuotes();
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -107,6 +82,7 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView,
             NavUtils.navigateUpTo(this, intent);
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -138,123 +114,192 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView,
     }
 
     @Override
+    public void checkItemsCount() {
+        if (mQuotesAdapter.getItemCount() == 0) {
+            showFavoritesEmpty();
+        }
+    }
+
+    @Override
     public void showError() {
         Log.e("Error accessing DB", "Error accessing DB");
     }
 
 
-    public void multi_select(int position) {
-        if (mActionMode != null) {
-            if (multiselect_list.contains(mQuotesAdapter.getItem(position)))
-                multiselect_list.remove(mQuotesAdapter.getItem(position));
-            else
-                multiselect_list.add(mQuotesAdapter.getItem(position));
-
-            if (multiselect_list.size() > 0)
-                mActionMode.setTitle("" + multiselect_list.size());
-            else
-                mActionMode.setTitle("");
-
-            mQuotesAdapter.mSelectedQuotes = multiselect_list;
-            mQuotesAdapter.notifyDataSetChanged();
-
-        }
-    }
-
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+    private ActionMode.Callback mDeleteMode = new ModalMultiSelectorCallback(mMultiSelector) {
 
         @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            // Inflate a menu resource providing context menu items
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.menu_multi_select, menu);
-
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            isActionModeStarted = true;
+            getMenuInflater().inflate(R.menu.favorites_menu, menu);
             return true;
         }
 
         @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false; // Return false if nothing is done
-        }
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.menu_item_delete_favorites:
+                    // Need to finish the action mode before doing the following,
+                    // not after. No idea why, but it crashes.
+                    isActionModeStarted = false;
+                    actionMode.finish();
 
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.action_delete:
-                    mAlertDialogHelper.showAlertDialog("","Delete Contact","DELETE","CANCEL",1,false);
+                    for (int position = mQuotesAdapter.getItemCount() - 1; position >= 0; position--) {
+                        if (mMultiSelector.isSelected(position)) {
+                            Quote quote = mQuotesAdapter.getItem(position);
+
+                            mQuotesAdapter.delete(quote);
+                            mQuotesAdapter.notifyItemRemoved(position);
+
+                            mFavoritesPresenter.deleteQuoteFromFavorites(quote);
+                        }
+                    }
+
+                    mMultiSelector.clearSelections();
                     return true;
                 default:
-                    return false;
+                    break;
             }
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            mActionMode = null;
-            isMultiSelect = false;
-            multiselect_list = new ArrayList<>();
-
-            mQuotesAdapter.mSelectedQuotes = multiselect_list;
-            mQuotesAdapter.notifyDataSetChanged();
-
-            getSupportActionBar().show();
+            return false;
         }
     };
 
     @Override
-    public void onPositiveClick(int from) {
-        if(from==1)
-        {
-            if(multiselect_list.size()>0)
-            {
-                for(int i=0;i<multiselect_list.size();i++) {
-                    Quote quote = multiselect_list.get(i);
-
-                    mQuotesAdapter.delete(quote);
-                    mFavoritesPresenter.deleteQuoteFromFavorites(quote);
-                }
-
-                mQuotesAdapter.notifyDataSetChanged();
-
-                if (mActionMode != null) {
-                    mActionMode.finish();
-                }
-
-//                Intent intent = newIntent(this);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                finish();
-                List<Quote> quotes = mQuotesAdapter.getQuotes();
-                mQuotesAdapter = new QuotesAdapter(this);
-                mQuotesAdapter.setQuotes(quotes);
-
-                mRecyclerView.setAdapter(mQuotesAdapter);
-                mRecyclerView.refreshDrawableState();
-                mRecyclerView.invalidate();
-                mRecyclerView.postInvalidate();
-                //mRecyclerView.swapAdapter(mQuotesAdapter, true);
-            }
-        }
-        else if(from==2)
-        {
-            if (mActionMode != null) {
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (isActionModeStarted) {
+            if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
                 mActionMode.finish();
+                return true;
+            }
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.QuotesViewHolder> {
+
+        private List<Quote> mQuotes;
+        private Context mContext;
+
+        protected List<Quote> mSelectedQuotes;
+
+        //@Inject
+        public QuotesAdapter(@ActivityContext Context context) {
+            mSelectedQuotes = new ArrayList<>();
+            mQuotes = new ArrayList<>();
+            mContext = context;
+        }
+
+        public void setContext(Context context) {
+            mContext = context;
+        }
+
+        @Override
+        public QuotesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quote_cardview, parent, false);
+            return new QuotesViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(final QuotesViewHolder holder, final int position) {
+            Quote quote = mQuotes.get(position);
+            holder.mQuoteTextView.setText(quote.getQuoteText());
+            holder.mAuthorTextView.setText(quote.getQuoteAuthor());
+
+            mMultiSelector.bindHolder(holder, position, -1);
+
+            if (mSelectedQuotes.contains(mQuotes.get(position))) {
+                holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.colorLightGray));
+            } else {
+                holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.cardview_light_background));
+            }
+        }
+
+        public void setQuotes(List<Quote> quotes) {
+            mQuotes = quotes;
+        }
+
+        public List<Quote> getQuotes() { return mQuotes; }
+
+        @Override
+        public int getItemCount() {
+            return mQuotes.size();
+        }
+
+        public Quote getItem(int id) {
+            return mQuotes.get(id);
+        }
+
+        public void delete(Quote quote) {
+            mQuotes.remove(quote);
+        }
+
+        class QuotesViewHolder extends MultiSelectorBindingHolder implements View.OnClickListener, View.OnLongClickListener {
+
+            @BindView(R.id.quote_item_textview) TextView mQuoteTextView;
+            @BindView(R.id.author_item_textview) TextView mAuthorTextView;
+
+            private boolean isSelected;
+
+            public QuotesViewHolder(View itemView) {
+                super(itemView, mMultiSelector);
+                ButterKnife.bind(this, itemView);
+                itemView.setOnClickListener(this);
+                itemView.setOnLongClickListener(this);
+                itemView.setLongClickable(true);
+
+
+                isSelected = false;
             }
 
-//            SampleModel mSample = new SampleModel("Name"+user_list.size(),"Designation"+user_list.size());
-//            user_list.add(mSample);
-//            multiSelectAdapter.notifyDataSetChanged();
+            @Override
+            public void onClick(View v) {
+                if (!mMultiSelector.tapSelection(this)) {
+                    Intent intent = MainActivity.newIntent(mContext,
+                            new Quote(mQuoteTextView.getText().toString(),
+                                    mAuthorTextView.getText().toString()));
+                    mContext.startActivity(intent);
+                }
+            }
 
+            @Override
+            public boolean onLongClick(View v) {
+                AppCompatActivity activity = (AppCompatActivity) mContext;
+                mActionMode = activity.startSupportActionMode(mDeleteMode);
+                mMultiSelector.setSelected(this, true);
+                return true;
+            }
+
+            private void refreshState() {
+                if (!isSelected) {
+                    this.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.colorLightGray));
+                } else {
+                    this.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.cardview_light_background));
+                }
+
+            }
+
+            @Override
+            public void setSelectable(boolean selectable) {
+                if (isSelected != selectable) {
+                    refreshState();
+                }
+                isSelected = selectable;
+            }
+
+            @Override
+            public boolean isSelectable() {
+                return isSelected;
+            }
+
+            @Override
+            public void setActivated(boolean activated) {
+
+            }
+
+            @Override
+            public boolean isActivated() {
+                return false;
+            }
         }
-    }
-
-    @Override
-    public void onNegativeClick(int from) {
-
-    }
-
-    @Override
-    public void onNeutralClick(int from) {
-
     }
 }

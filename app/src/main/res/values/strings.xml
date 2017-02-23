@@ -31,4 +31,7 @@
     <string name="preference_notification_key" translatable="false">pref_notification</string>
     <string name="preference_notification">Notifications</string>
 
+    <string name="show_subtitle">Show</string>
+    <string name="hide_subtitle">Hide</string>
+    <string name="delete_favorites">Delete</string>
 </resources>

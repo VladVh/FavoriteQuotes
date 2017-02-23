@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -105,7 +106,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
             sharingIntent.setType("text/plain");
             sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name);
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, mQuoteTextView.getText()
-                    + "  \u00A9 "
+                    + "\n  \u00A9 "
                     + mAuthorTextView.getText());
             startActivity(Intent.createChooser(sharingIntent, "Share using"));
         } else if (item.getItemId() == R.id.action_favorites) {
@@ -123,10 +124,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         switch (requestCode) {
             case SettingsActivity.SettingsFragment.LANGUAGE_CHANGED:
                 if (resultCode == SettingsActivity.SettingsFragment.LANGUAGE_CHANGED) {
-                    startActivity(MainActivity.newIntent(this,
-                            new Quote(mQuoteTextView.getText().toString(),
-                                    mAuthorTextView.getText().toString()))
-                    );
+                    startActivity(MainActivity.newIntent(this));
                     finish();
                 }
                 break;
@@ -177,6 +175,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
     @Override
     public void showExistsInFavorites(boolean exists) {
+        Log.e("ShowExists", "show " + exists);//, new Exception());
         if (exists) {
             mFavoritesImageButton.setImageResource(R.mipmap.ic_heart_black_48dp);
             mFavoritesImageButton.setEnabled(false);
@@ -190,5 +189,14 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     public void showError() {
         mQuoteTextView.setText(R.string.error_loading_quote);
         mAuthorTextView.setText("");
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mMenu.findItem(R.id.action_refresh).setIcon(R.mipmap.ic_autorenew_black_48dp);
+                mMenu.findItem(R.id.action_refresh).setEnabled(true);
+            }
+        }, 500);
     }
 }

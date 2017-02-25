@@ -123,10 +123,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         switch (requestCode) {
             case SettingsActivity.SettingsFragment.LANGUAGE_CHANGED:
                 if (resultCode == SettingsActivity.SettingsFragment.LANGUAGE_CHANGED) {
-                    startActivity(MainActivity.newIntent(this,
-                            new Quote(mQuoteTextView.getText().toString(),
-                                    mAuthorTextView.getText().toString()))
-                    );
+                    startActivity(MainActivity.newIntent(this));
                     finish();
                 }
                 break;
@@ -190,5 +187,14 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     public void showError() {
         mQuoteTextView.setText(R.string.error_loading_quote);
         mAuthorTextView.setText("");
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mMenu.findItem(R.id.action_refresh).setIcon(R.mipmap.ic_autorenew_black_48dp);
+                mMenu.findItem(R.id.action_refresh).setEnabled(true);
+            }
+        }, 500);
     }
 }

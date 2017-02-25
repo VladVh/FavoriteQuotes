@@ -32,18 +32,63 @@ import butterknife.ButterKnife;
 
 public class FavoritesActivity extends BaseActivity implements FavoritesMvpView, AlertDialogHelper.AlertDialogListener {
 
-    @Inject FavoritesPresenter mFavoritesPresenter;
-    @Inject QuotesAdapter mQuotesAdapter;
-    @Inject AlertDialogHelper mAlertDialogHelper;
+    @Inject
+    FavoritesPresenter mFavoritesPresenter;
+    @Inject
+    QuotesAdapter mQuotesAdapter;
+    @Inject
+    AlertDialogHelper mAlertDialogHelper;
 
-    @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
-    @BindView(R.id.favorites_empty_textView) TextView mEmptyTextView;
-    @BindView(R.id.main_toolbar) Toolbar mToolbar;
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.favorites_empty_textView)
+    TextView mEmptyTextView;
+    @BindView(R.id.main_toolbar)
+    Toolbar mToolbar;
 
-    boolean isMultiSelect = false;
-    ActionMode mActionMode;
+    private boolean isMultiSelect = false;
+    private ActionMode mActionMode;
 
-    ArrayList<Quote> multiselect_list = new ArrayList<>();
+    private ArrayList<Quote> multiselectList = new ArrayList<>();
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            // Inflate a menu resource providing context menu items
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_multi_select, menu);
+
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false; // Return false if nothing is done
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_delete:
+                    mAlertDialogHelper.showAlertDialog("", "Delete quotes", "DELETE", "CANCEL", 1, false);
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+            isMultiSelect = false;
+            multiselectList = new ArrayList<>();
+
+            mQuotesAdapter.mSelectedQuotes = multiselectList;
+            mQuotesAdapter.notifyDataSetChanged();
+
+            getSupportActionBar().show();
+        }
+    };
 
     public static Intent newIntent(Context context) {
         return new Intent(context, FavoritesActivity.class);
@@ -72,7 +117,7 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView,
                             @Override
                             public void onItemClick(View view, int position) {
                                 if (isMultiSelect)
-                                    multi_select(position);
+                                    multiSelect(position);
                                 else
                                     Toast.makeText(getApplicationContext(), "Details Page", Toast.LENGTH_SHORT).show();
                             }
@@ -80,7 +125,7 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView,
                             @Override
                             public void onItemLongClick(View view, int position) {
                                 if (!isMultiSelect) {
-                                    multiselect_list = new ArrayList<>();
+                                    multiselectList = new ArrayList<>();
                                     isMultiSelect = true;
 
                                     if (mActionMode == null) {
@@ -89,7 +134,7 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView,
                                     }
                                 }
 
-                                multi_select(position);
+                                multiSelect(position);
 
                             }
                         }));
@@ -98,12 +143,11 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView,
         mFavoritesPresenter.getQuotes();
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             Intent intent = NavUtils.getParentActivityIntent(this);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             NavUtils.navigateUpTo(this, intent);
             return true;
         }
@@ -142,73 +186,30 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView,
         Log.e("Error accessing DB", "Error accessing DB");
     }
 
-
-    public void multi_select(int position) {
+    public void multiSelect(int position) {
         if (mActionMode != null) {
-            if (multiselect_list.contains(mQuotesAdapter.getItem(position)))
-                multiselect_list.remove(mQuotesAdapter.getItem(position));
+            if (multiselectList.contains(mQuotesAdapter.getItem(position)))
+                multiselectList.remove(mQuotesAdapter.getItem(position));
             else
-                multiselect_list.add(mQuotesAdapter.getItem(position));
+                multiselectList.add(mQuotesAdapter.getItem(position));
 
-            if (multiselect_list.size() > 0)
-                mActionMode.setTitle("" + multiselect_list.size());
+            if (multiselectList.size() > 0)
+                mActionMode.setTitle("" + multiselectList.size());
             else
                 mActionMode.setTitle("");
 
-            mQuotesAdapter.mSelectedQuotes = multiselect_list;
+            mQuotesAdapter.mSelectedQuotes = multiselectList;
             mQuotesAdapter.notifyDataSetChanged();
 
         }
     }
 
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            // Inflate a menu resource providing context menu items
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.menu_multi_select, menu);
-
-            return true;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false; // Return false if nothing is done
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.action_delete:
-                    mAlertDialogHelper.showAlertDialog("","Delete Contact","DELETE","CANCEL",1,false);
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            mActionMode = null;
-            isMultiSelect = false;
-            multiselect_list = new ArrayList<>();
-
-            mQuotesAdapter.mSelectedQuotes = multiselect_list;
-            mQuotesAdapter.notifyDataSetChanged();
-
-            getSupportActionBar().show();
-        }
-    };
-
     @Override
     public void onPositiveClick(int from) {
-        if(from==1)
-        {
-            if(multiselect_list.size()>0)
-            {
-                for(int i=0;i<multiselect_list.size();i++) {
-                    Quote quote = multiselect_list.get(i);
+        if (from == 1) {
+            if (multiselectList.size() > 0) {
+                for (int i = 0; i < multiselectList.size(); i++) {
+                    Quote quote = multiselectList.get(i);
 
                     mQuotesAdapter.delete(quote);
                     mFavoritesPresenter.deleteQuoteFromFavorites(quote);
@@ -224,19 +225,9 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView,
 //                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                startActivity(intent);
 //                finish();
-                List<Quote> quotes = mQuotesAdapter.getQuotes();
-                mQuotesAdapter = new QuotesAdapter(this);
-                mQuotesAdapter.setQuotes(quotes);
-
-                mRecyclerView.setAdapter(mQuotesAdapter);
-                mRecyclerView.refreshDrawableState();
-                mRecyclerView.invalidate();
-                mRecyclerView.postInvalidate();
                 //mRecyclerView.swapAdapter(mQuotesAdapter, true);
             }
-        }
-        else if(from==2)
-        {
+        } else if (from == 2) {
             if (mActionMode != null) {
                 mActionMode.finish();
             }

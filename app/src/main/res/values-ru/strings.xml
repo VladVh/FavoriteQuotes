@@ -24,6 +24,10 @@
     <string name="preference_language">Язык</string>
     <string name="preference_notification">Уведомления</string>
     <string name="share_item">Поделиться</string>
+    <string name="favorites_delete_items">Удаление элементов</string>
+    <string name="delete_item">Удалить</string>
+    <string name="cancel_item">Отмена</string>
+    <string name="favorites_delete_dialog">Подтверждаете удаление?</string>
 
     <!--preferences !-->
 </resources>

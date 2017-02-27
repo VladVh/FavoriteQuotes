@@ -14,12 +14,16 @@
     <!--favorites !-->
     <string name="favorites">Favorites</string>
     <string name="favorites_empty_textview">There aren\'t any quotes yet. Please, add some quotes to your favorites</string>
+    <string name="favorites_delete_items">Choose items to delete</string>
+    <string name="favorites_delete_dialog">Confirm deletion?</string>
 
     <!--menu !-->
     <string name="refresh_item">New quote</string>
     <string name="share_item">Share</string>
     <string name="favorites_item">Favorites</string>
     <string name="settings_item">Settings</string>
+    <string name="delete_item">Delete</string>
+    <string name="cancel_item">Cancel</string>
 
     <!--notification !-->
     <string name="notification_title">Famous quotes from famous people</string>

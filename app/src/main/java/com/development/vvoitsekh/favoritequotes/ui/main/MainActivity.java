@@ -107,7 +107,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, mQuoteTextView.getText()
                     + "  \u00A9 "
                     + mAuthorTextView.getText());
-            startActivity(Intent.createChooser(sharingIntent, "Share using"));
+            startActivity(Intent.createChooser(sharingIntent, ""));
         } else if (item.getItemId() == R.id.action_favorites) {
             startActivity(FavoritesActivity.newIntent(this));
         } else if (item.getItemId() == R.id.action_settings) {

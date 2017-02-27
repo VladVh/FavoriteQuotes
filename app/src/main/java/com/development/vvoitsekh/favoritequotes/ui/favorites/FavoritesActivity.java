@@ -15,11 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewParent;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.development.vvoitsekh.favoritequotes.R;
 import com.development.vvoitsekh.favoritequotes.data.model.Quote;
 import com.development.vvoitsekh.favoritequotes.ui.base.BaseActivity;
+import com.development.vvoitsekh.favoritequotes.ui.main.MainActivity;
 import com.development.vvoitsekh.favoritequotes.utils.AlertDialogHelper;
 
 import java.util.ArrayList;
@@ -104,11 +104,8 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView,
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-        //mQuotesAdapter.setContext(this);
         mRecyclerView.setAdapter(mQuotesAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //mRecyclerView.addItemDecoration(new DividerItemDecoration(this, R.drawable.divider));
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(FavoritesActivity.this,
@@ -118,8 +115,12 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView,
                             public void onItemClick(View view, int position) {
                                 if (isMultiSelect)
                                     multiSelect(position);
-                                else
-                                    Toast.makeText(getApplicationContext(), "Details Page", Toast.LENGTH_SHORT).show();
+                                else {
+                                    Intent intent = MainActivity.newIntent(FavoritesActivity.this,
+                                            mQuotesAdapter.getItem(position));
+                                    startActivity(intent);
+                                }
+
                             }
 
                             @Override
@@ -196,7 +197,7 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView,
             if (multiselectList.size() > 0)
                 mActionMode.setTitle("" + multiselectList.size());
             else
-                mActionMode.setTitle("");
+                mActionMode.setTitle(getResources().getString(R.string.favorites_delete_items));
 
             mQuotesAdapter.mSelectedQuotes = multiselectList;
             mQuotesAdapter.notifyDataSetChanged();
@@ -220,22 +221,11 @@ public class FavoritesActivity extends BaseActivity implements FavoritesMvpView,
                 if (mActionMode != null) {
                     mActionMode.finish();
                 }
-
-//                Intent intent = newIntent(this);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                finish();
-                //mRecyclerView.swapAdapter(mQuotesAdapter, true);
             }
         } else if (from == 2) {
             if (mActionMode != null) {
                 mActionMode.finish();
             }
-
-//            SampleModel mSample = new SampleModel("Name"+user_list.size(),"Designation"+user_list.size());
-//            user_list.add(mSample);
-//            multiSelectAdapter.notifyDataSetChanged();
-
         }
     }
 

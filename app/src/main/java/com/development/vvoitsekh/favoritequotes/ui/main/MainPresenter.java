@@ -24,6 +24,8 @@ import rx.schedulers.Schedulers;
 
 public class MainPresenter extends BasePresenter<MainMvpView> {
 
+    private static final String TAG = "MainPresenter";
+
     private final DataManager mDataManager;
     private Subscription mSubscription;
 
@@ -56,7 +58,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     private void loadQuoteEn() {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
-        Log.e("loadQuote", "loadQuote");
+        Log.e(TAG, "loading Quote");
 
         mSubscription = ApiFactory.getQuotesService()
                 .randomQuote()
@@ -71,18 +73,18 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                 .subscribe(new Subscriber<Quote>() {
                     @Override
                     public void onCompleted() {
-                        Log.e("Completed", "completed");
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("INTERNET ERROR", e.getMessage());
+                        Log.e(TAG, e.getMessage());
                         getMvpView().showError();
                     }
 
                     @Override
                     public void onNext(Quote quote) {
-                        Log.e("added", "quote set");
+                        Log.e(TAG, "quotes set");
                         getMvpView().showQuote(quote);
                     }
                 });
@@ -91,7 +93,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     private void loadQuoteRu() {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
-        Log.e("loadQuote", "loadQuote");
+        Log.e(TAG, "loading Quote");
 
         mSubscription = ApiFactory.getQuotesService()
                 .randomQuoteRU()
@@ -106,18 +108,18 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                 .subscribe(new Subscriber<Quote>() {
                     @Override
                     public void onCompleted() {
-                        Log.e("Completed", "completed");
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("INTERNET ERROR", e.getMessage());
+                        Log.e(TAG, e.getMessage());
                         getMvpView().showError();
                     }
 
                     @Override
                     public void onNext(Quote quote) {
-                        Log.e("added", "quote set");
+                        Log.e(TAG, "quotes set");
                         getMvpView().showQuote(quote);
                     }
                 });
@@ -136,7 +138,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("DB error", "error loading the quotes");
+                        Log.e(TAG, "error loading the quotes");
                         getMvpView().showError();
                     }
 
@@ -162,17 +164,17 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                 .subscribe(new Subscriber<Long>() {
             @Override
             public void onCompleted() {
-                Log.e("added to favorites", "added");
+
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.e("adding to favorites", e.getMessage());
+                Log.e(TAG, e.getMessage());
             }
 
             @Override
             public void onNext(Long aLong) {
-                Log.e("received long", "" + aLong);
+                Log.e(TAG, "received value " + aLong);
             }
         });
     }

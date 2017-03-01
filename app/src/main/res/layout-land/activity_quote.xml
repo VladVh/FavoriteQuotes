@@ -49,6 +49,7 @@
             android:layout_marginBottom="16dp"
             android:background="@drawable/favorites_button_selector"
             android:onClick="addToFavorites"
+            android:contentDescription="@string/favorites_button"
             app:srcCompat="@mipmap/ic_thumb_up_black_48dp"/>
     </RelativeLayout>
 

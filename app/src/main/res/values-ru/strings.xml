@@ -3,13 +3,8 @@
     <string name="app_name">Лучшие цитаты</string>
 
     <string name="error_loading_quote">Ошибка при загрузке цитаты. Пожалуйста, проверьте интернет соединение.</string>
-    <string name="menu_favorites">Избранное</string>
-    <string name="menu_refresh">Обновить</string>
     <string name="quotes">Лучшие цитаты</string>
     <string name="favorites_button">Добавить в избранное</string>
-
-    <string name="favorites_added_toast">Добавлено</string>
-    <string name="favorites_already_added_toast">Цитата уже находится в избранном</string>
 
     <!--favorites !-->
     <string name="favorites">Избранное</string>

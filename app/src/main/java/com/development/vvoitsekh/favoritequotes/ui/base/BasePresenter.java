@@ -1,8 +1,5 @@
 package com.development.vvoitsekh.favoritequotes.ui.base;
 
-/**
- * Created by v.voitsekh on 14.12.2016.
- */
 
 public class BasePresenter <T extends MvpView> implements Presenter<T> {
 
@@ -18,7 +15,7 @@ public class BasePresenter <T extends MvpView> implements Presenter<T> {
         mMvpView = null;
     }
 
-    public boolean isViewAttached() {
+    private boolean isViewAttached() {
         return mMvpView != null;
     }
 
@@ -26,7 +23,7 @@ public class BasePresenter <T extends MvpView> implements Presenter<T> {
         return mMvpView;
     }
 
-    public void checkViewAttached() {
+    protected void checkViewAttached() {
         if (!isViewAttached()) {
             throw new MvpViewNotAttachedException();
         }

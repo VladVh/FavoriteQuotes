@@ -10,9 +10,6 @@ import javax.inject.Singleton;
 
 import rx.Observable;
 
-/**
- * Created by v.voitsekh on 13.12.2016.
- */
 
 @Singleton
 public class DataManager {
@@ -21,14 +18,10 @@ public class DataManager {
     //private final DataSource mDataSource;
 
     @Inject
-    public DataManager(QuoteDataSource mDatabaseHelper) {
+    DataManager(QuoteDataSource mDatabaseHelper) {
         this.mDataSource = mDatabaseHelper;
     }
 
-//    @Inject
-//    public DataManager(DataSource dataSource) {
-//        this.mDataSource = dataSource;
-//    }
 
     public Observable<List<Quote>> getQuotes() {
         return mDataSource.getQuotes();

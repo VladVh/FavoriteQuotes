@@ -10,9 +10,6 @@ import com.development.vvoitsekh.favoritequotes.notification.NotificationService
 
 import java.util.Locale;
 
-/**
- * Created by v.voitsekh on 04.01.2017.
- */
 
 public class AppUtils {
 
@@ -38,6 +35,7 @@ public class AppUtils {
             else {
                 editor.putString(context.getResources().getString(R.string.preference_language_key), "en_EN");
             }
+            editor.apply();
         }
     }
 

@@ -9,15 +9,11 @@ import java.io.IOException;
 
 import okhttp3.ResponseBody;
 
-/**
- * Created by v.voitsekh on 14.12.2016.
- */
 
 public class JsonUtils {
 
     private static final String QUOTE_TEXT = "quoteText";
     private static final String QUOTE_AUTHOR = "quoteAuthor";
-    private static final String QUOTE_LINK = "quoteLink";
 
     public static Quote parse(ResponseBody response) {
         Quote quote = new Quote();

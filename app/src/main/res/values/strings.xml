@@ -3,13 +3,8 @@
     <string name="app_name">Favorite Quotes</string>
 
     <string name="error_loading_quote">Error loading a quote. Please, check Internet connection.</string>
-    <string name="menu_favorites">Favorites</string>
-    <string name="menu_refresh">Refresh</string>
     <string name="quotes">Best Quotes</string>
     <string name="favorites_button">Add to favorites</string>
-
-    <string name="favorites_added_toast">Added to favorites</string>
-    <string name="favorites_already_added_toast">Quote was already added</string>
 
     <!--favorites !-->
     <string name="favorites">Favorites</string>
@@ -23,7 +18,6 @@
     <string name="favorites_item">Favorites</string>
     <string name="settings_item">Settings</string>
     <string name="delete_item">Delete</string>
-    <string name="cancel_item">Cancel</string>
 
     <!--notification !-->
     <string name="notification_title">Famous quotes from famous people</string>

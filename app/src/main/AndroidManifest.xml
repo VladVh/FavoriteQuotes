@@ -37,7 +37,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".notification.Receiver" android:enabled="true"/>
+        <!--<receiver android:name=".notification.Receiver" android:enabled="true"/>-->
         <service android:name=".notification.NotificationService"/>
     </application>
 

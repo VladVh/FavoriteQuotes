@@ -15,17 +15,16 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
-/**
- * Created by v.voitsekh on 21.12.2016.
- */
 
 public class FavoritesPresenter extends BasePresenter<FavoritesMvpView> {
+
+    private static final String TAG = "FavoritesPresenter";
 
     private final DataManager mDataManager;
     private Subscription mSubscription;
 
     @Inject
-    public FavoritesPresenter(DataManager dataManager) {
+    FavoritesPresenter(DataManager dataManager) {
         mDataManager = dataManager;
     }
 
@@ -37,7 +36,7 @@ public class FavoritesPresenter extends BasePresenter<FavoritesMvpView> {
         }
     }
 
-    public void getQuotes() {
+    void getQuotes() {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
         mSubscription = mDataManager.getQuotes()
@@ -51,7 +50,7 @@ public class FavoritesPresenter extends BasePresenter<FavoritesMvpView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("DB error", "error loading the quotes");
+                        Log.e(TAG, "error loading the favorites");
                         getMvpView().showError();
                     }
 
@@ -66,7 +65,7 @@ public class FavoritesPresenter extends BasePresenter<FavoritesMvpView> {
                 });
     }
 
-    public void deleteQuoteFromFavorites(Quote quote) {
+    void deleteQuoteFromFavorites(Quote quote) {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
         mDataManager.deleteQuote(quote).subscribe();

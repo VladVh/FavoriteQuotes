@@ -18,9 +18,6 @@ import java.util.Locale;
 
 import static com.development.vvoitsekh.favoritequotes.R.string.preference_language_key;
 
-/**
- * Created by v.voitsekh on 06.01.2017.
- */
 
 public class SettingsActivity extends PreferenceActivity {
 

@@ -23,13 +23,10 @@ import rx.plugins.RxJavaPlugins;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * Created by v.voitsekh on 14.12.2016.
- */
 
 public class MainApplication extends Application {
 
-    ApplicationComponent mApplicationComponent;
+    private ApplicationComponent mApplicationComponent;
 
     @Override
     public void onCreate() {

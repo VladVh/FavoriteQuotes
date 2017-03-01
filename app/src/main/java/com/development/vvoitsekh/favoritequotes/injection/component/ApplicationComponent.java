@@ -10,15 +10,10 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 
-/**
- * Created by v.voitsekh on 13.12.2016.
- */
 
 @Singleton
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
-
-    //Context context();
 
     Application application();
     QuoteDataSource databaseHelper();

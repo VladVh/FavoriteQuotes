@@ -15,9 +15,6 @@ import com.development.vvoitsekh.favoritequotes.ui.main.MainActivity;
 
 import java.util.Calendar;
 
-/**
- * Created by v.voitsekh on 05.01.2017.
- */
 
 public class NotificationService extends IntentService {
 

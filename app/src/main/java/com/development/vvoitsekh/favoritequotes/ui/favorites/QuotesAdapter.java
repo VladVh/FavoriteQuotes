@@ -25,16 +25,12 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.QuotesView
     private List<Quote> mQuotes;
     private Context mContext;
 
-    protected List<Quote> mSelectedQuotes;
+    List<Quote> mSelectedQuotes;
 
     @Inject
-    public QuotesAdapter(@ActivityContext Context context) {
+    QuotesAdapter(@ActivityContext Context context) {
         mSelectedQuotes = new ArrayList<>();
         mQuotes = new ArrayList<>();
-        mContext = context;
-    }
-
-    public void setContext(Context context) {
         mContext = context;
     }
 
@@ -67,11 +63,11 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.QuotesView
         return mQuotes.size();
     }
 
-    public Quote getItem(int id) {
+    Quote getItem(int id) {
         return mQuotes.get(id);
     }
 
-    public void delete(Quote quote) {
+    void delete(Quote quote) {
         mQuotes.remove(quote);
     }
 
@@ -80,7 +76,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.QuotesView
         @BindView(R.id.quote_item_textview) TextView mQuoteTextView;
         @BindView(R.id.author_item_textview) TextView mAuthorTextView;
 
-        public QuotesViewHolder(View itemView) {
+        QuotesViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

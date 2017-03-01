@@ -15,16 +15,12 @@ import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by v.voitsekh on 11.11.2016.
- */
-
 public class QuoteDataSource {
 
     private final BriteDatabase mDb;
 
     @Inject
-    public QuoteDataSource(QuoteDBHelper quoteDBHelper) {
+    QuoteDataSource(QuoteDBHelper quoteDBHelper) {
         SqlBrite.Builder builder = new SqlBrite.Builder();
         mDb = builder.build().wrapDatabaseHelper(quoteDBHelper, Schedulers.immediate());
     }

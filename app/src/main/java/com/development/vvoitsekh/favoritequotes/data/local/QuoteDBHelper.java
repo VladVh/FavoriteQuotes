@@ -9,10 +9,6 @@ import com.development.vvoitsekh.favoritequotes.injection.ApplicationContext;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-/**
- * Created by v.voitsekh on 10.11.2016.
- */
-
 @Singleton
 public class QuoteDBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;

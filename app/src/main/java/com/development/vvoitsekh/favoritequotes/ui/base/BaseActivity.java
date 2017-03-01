@@ -13,9 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-/**
- * Created by v.voitsekh on 14.12.2016.
- */
 
 public class BaseActivity extends AppCompatActivity {
     private static final String KEY_ACTIVITY_ID = "KEY_ACTIVITY_ID";

@@ -14,19 +14,19 @@ import com.development.vvoitsekh.favoritequotes.injection.ActivityContext;
 import javax.inject.Inject;
 
 public class AlertDialogHelper {
-    Context context;
-    AlertDialog alertDialog = null;
-    AlertDialogListener callBack;
-    Activity current_activity;
+    private Context context;
+    private AlertDialog alertDialog = null;
+    private AlertDialogListener callBack;
+    private Activity current_activity;
 
     @Inject
-    public AlertDialogHelper(@ActivityContext Context context) {
+    AlertDialogHelper(@ActivityContext Context context) {
         this.context = context;
         this.current_activity = (Activity) context;
         callBack = (AlertDialogListener) context;
     }
 
-    public void showAlertDialog(String title, String message, String positive, String negative, String neutral, final int from, boolean isCancelable) {
+    private void showAlertDialog(String title, String message, String positive, String negative, String neutral, final int from, boolean isCancelable) {
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(current_activity);
 
         if (!TextUtils.isEmpty(title))
@@ -91,14 +91,6 @@ public class AlertDialogHelper {
 
         alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-    }
-
-    public void showAlertDialog(String title, String message, String positive, final int from, boolean isCancelable) {
-        showAlertDialog(title, message, positive, "", "", from, isCancelable);
-    }
-
-    public void showAlertDialog(String title, String message, String positive, final int from) {
-        showAlertDialog(title, message, positive, "", "", from, false);
     }
 
     public void showAlertDialog(String title, String message, String positive, String negative, final int from, boolean isCancelable) {

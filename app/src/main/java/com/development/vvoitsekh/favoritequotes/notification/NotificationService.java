@@ -64,7 +64,7 @@ public class NotificationService extends IntentService {
             if (now.after(alarmStartTime)) {
                 alarmStartTime.add(Calendar.DATE, 1);
             }
-            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
+            alarmManager.setInexactRepeating(AlarmManager.RTC,
                     alarmStartTime.getTimeInMillis(), POLL_INTERVAL, pendingIntent);
         } else {
             alarmManager.cancel(pendingIntent);

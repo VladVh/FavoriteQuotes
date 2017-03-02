@@ -17,19 +17,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/main_toolbar"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin">
-
-        <TextView
-            android:id="@+id/author_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/quote_textview"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="49dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textStyle="italic"/>
-
 
         <ImageButton
             android:id="@+id/favorites_imageButton"
@@ -47,14 +37,25 @@
             android:id="@+id/quote_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="160dp"
+            android:layout_centerVertical="true"
             android:padding="16dp"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/author_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/quote_textview"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="60dp"
+            android:layout_marginTop="40dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="italic"/>
 
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

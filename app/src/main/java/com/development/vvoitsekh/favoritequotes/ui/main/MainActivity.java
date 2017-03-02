@@ -104,9 +104,14 @@ public class MainActivity extends BaseActivity implements MainMvpView {
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
             sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name);
-            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, mQuoteTextView.getText()
-                    + "  \u00A9 "
-                    + mAuthorTextView.getText());
+            if (mAuthorTextView.getText().length() > 0) {
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, mQuoteTextView.getText()
+                        + "  \u00A9 "
+                        + mAuthorTextView.getText());
+            } else {
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, mQuoteTextView.getText());
+            }
+
             startActivity(Intent.createChooser(sharingIntent, ""));
         } else if (item.getItemId() == R.id.action_favorites) {
             startActivity(FavoritesActivity.newIntent(this));
@@ -160,6 +165,14 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     public void showQuote(Quote quote) {
         mMainPresenter.isQuoteInFavorites(quote.getQuoteText());
         mQuoteTextView.setText(quote.getQuoteText());
+//        mQuoteTextView.setText("asdfadfadf asdfsdfooat ojaota llksjt lasjtl latlat" +
+//                " lsajtltja l jlatj lalk ta laitj jidlatl ijlaitj laistjlj" +
+//                " alsitjalstj latlkat ka jojosta oasjtla sn tsoeoes woetset" +
+//                "lasjtl astaseto seorsaoe oasejrtas oajser stoasjt ojaosts t" +
+//                "asltjals alstjlse sd fasejoqwetsd  woetwler setwt c" +
+//                "sdlfjw e otjset qlsjfzcf woet slbjslkt lsejtlw lstjlasj t" +
+//                "alsdjlt nbweqowetjl stojwoe serwetwetk jwtwetow joq"
+//        );
         mAuthorTextView.setText(quote.getQuoteAuthor());
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
